@@ -24,6 +24,7 @@
 
 <style>
 :root{
+  /* Departure - the signature theme. Deep space, departure-board amber. */
   --void:#04060B;
   --panel:#0A0F18;
   --panel-2:#0E1522;
@@ -36,7 +37,90 @@
   --amber:#F0A93B;
   --amber-dim:#8A6224;
   --sky:#5EC8E5;
+  --good:#5ED6A4;
+  --bad:#E8734A;
+  --globe-bg:radial-gradient(120% 90% at 76% 16%, #0D1726 0%, #06090F 46%, #04060B 100%);
+  --veil:
+    radial-gradient(72% 54% at 20% 26%, rgba(4,6,11,.93) 0%, rgba(4,6,11,.5) 48%, rgba(4,6,11,0) 78%),
+    linear-gradient(180deg, rgba(4,6,11,.5) 0%, rgba(4,6,11,0) 22%, rgba(4,6,11,.8) 86%, var(--void) 100%);
+  --veil-mobile:
+    linear-gradient(180deg, rgba(4,6,11,.62) 0%, rgba(4,6,11,.34) 26%, rgba(4,6,11,.86) 82%, var(--void) 100%);
+}
 
+/* Terminal - phosphor green on near-black, the colour of a screen you stare at. */
+:root[data-theme="terminal"]{
+  --void:#05080A;
+  --panel:#0A1114;
+  --panel-2:#0E181C;
+  --edge:#16262A;
+  --edge-2:#1F363C;
+  --ink:#DFF5EA;
+  --soft:#A9CFC1;
+  --muted:#6E9689;
+  --dim:#456A60;
+  --amber:#52E39B;
+  --amber-dim:#2C7B57;
+  --sky:#7FD4C1;
+  --good:#8AF0B8;
+  --bad:#F08A5D;
+  --globe-bg:radial-gradient(120% 90% at 76% 16%, #08171A 0%, #060D0F 46%, #05080A 100%);
+  --veil:
+    radial-gradient(72% 54% at 20% 26%, rgba(5,8,10,.93) 0%, rgba(5,8,10,.5) 48%, rgba(5,8,10,0) 78%),
+    linear-gradient(180deg, rgba(5,8,10,.5) 0%, rgba(5,8,10,0) 22%, rgba(5,8,10,.8) 86%, var(--void) 100%);
+  --veil-mobile:
+    linear-gradient(180deg, rgba(5,8,10,.62) 0%, rgba(5,8,10,.34) 26%, rgba(5,8,10,.86) 82%, var(--void) 100%);
+}
+
+/* Redeye - the 2am flight. Plum ink, coral warning lights. */
+:root[data-theme="redeye"]{
+  --void:#09060F;
+  --panel:#120C1B;
+  --panel-2:#181026;
+  --edge:#271A34;
+  --edge-2:#372449;
+  --ink:#F2E9F5;
+  --soft:#CBB9D6;
+  --muted:#93809F;
+  --dim:#655473;
+  --amber:#FF7A6B;
+  --amber-dim:#8E4038;
+  --sky:#B48CF7;
+  --good:#6FE0B0;
+  --bad:#FF7A6B;
+  --globe-bg:radial-gradient(120% 90% at 76% 16%, #1A1030 0%, #0C0716 46%, #09060F 100%);
+  --veil:
+    radial-gradient(72% 54% at 20% 26%, rgba(9,6,15,.93) 0%, rgba(9,6,15,.5) 48%, rgba(9,6,15,0) 78%),
+    linear-gradient(180deg, rgba(9,6,15,.5) 0%, rgba(9,6,15,0) 22%, rgba(9,6,15,.8) 86%, var(--void) 100%);
+  --veil-mobile:
+    linear-gradient(180deg, rgba(9,6,15,.62) 0%, rgba(9,6,15,.34) 26%, rgba(9,6,15,.86) 82%, var(--void) 100%);
+}
+
+/* Daylight - paper and ink, for people who do not want a dark page. */
+:root[data-theme="daylight"]{
+  --void:#F4F1EA;
+  --panel:#FFFFFF;
+  --panel-2:#FAF8F3;
+  --edge:#DFD9CC;
+  --edge-2:#C9C1B0;
+  --ink:#141A21;
+  --soft:#3D4854;
+  --muted:#6A7686;
+  --dim:#8C97A5;
+  --amber:#B4530A;
+  --amber-dim:#D8A97A;
+  --sky:#0E6E86;
+  --good:#1F7A55;
+  --bad:#B03A24;
+  --globe-bg:radial-gradient(120% 90% at 76% 16%, #FFFFFF 0%, #F7F4ED 48%, #F0ECE3 100%);
+  --veil:
+    radial-gradient(72% 54% at 20% 26%, rgba(244,241,234,.94) 0%, rgba(244,241,234,.55) 48%, rgba(244,241,234,0) 78%),
+    linear-gradient(180deg, rgba(244,241,234,.55) 0%, rgba(244,241,234,0) 22%, rgba(244,241,234,.85) 86%, var(--void) 100%);
+  --veil-mobile:
+    linear-gradient(180deg, rgba(244,241,234,.66) 0%, rgba(244,241,234,.38) 26%, rgba(244,241,234,.9) 82%, var(--void) 100%);
+}
+
+/* Type and layout are theme-independent. */
+:root{
   --display:'Archivo','Helvetica Neue',Arial,sans-serif;
   --body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
   --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
@@ -57,13 +141,11 @@ a{color:inherit}
 
 #globe{
   position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;
-  background:radial-gradient(120% 90% at 76% 16%, #0D1726 0%, #06090F 46%, #04060B 100%);
+  background:var(--globe-bg);
 }
 .veil{
   position:fixed;inset:0;z-index:1;pointer-events:none;
-  background:
-    radial-gradient(72% 54% at 20% 26%, rgba(4,6,11,.93) 0%, rgba(4,6,11,.5) 48%, rgba(4,6,11,0) 78%),
-    linear-gradient(180deg, rgba(4,6,11,.5) 0%, rgba(4,6,11,0) 22%, rgba(4,6,11,.8) 86%, var(--void) 100%);
+  background:var(--veil);
 }
 .wrap{position:relative;z-index:2}
 
@@ -87,8 +169,58 @@ section{padding:clamp(112px,15vw,216px) 0}
 .head .tag{margin-bottom:18px;display:flex;gap:12px;align-items:baseline}
 .head .tag .n{color:var(--amber);font-family:var(--mono);font-size:12px;letter-spacing:.2em}
 
+/* ---------- header + theme switcher ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px var(--gut);
+  background:linear-gradient(180deg, var(--void) 0%, transparent 100%);
+  transition:background .35s, border-color .35s;
+  border-bottom:1px solid transparent;
+}
+.topbar.stuck{
+  background:var(--panel);                                  /* fallback */
+  background:color-mix(in srgb, var(--void) 88%, transparent);
+  backdrop-filter:blur(14px);border-bottom-color:var(--edge);
+}
+.brand{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;white-space:nowrap;
+}
+.brand b{color:var(--ink);font-weight:500}
+.swatches{display:flex;align-items:center;gap:8px}
+.swatches .lbl{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim);margin-right:4px;
+}
+.sw{
+  width:22px;height:22px;border-radius:50%;padding:0;cursor:pointer;
+  border:1px solid var(--edge-2);position:relative;
+  transition:transform .22s cubic-bezier(.2,.7,.3,1),border-color .22s;
+}
+.sw:hover{transform:scale(1.16)}
+.sw:focus-visible{outline:2px solid var(--sky);outline-offset:3px}
+.sw[aria-pressed="true"]{border-color:var(--ink)}
+.sw[aria-pressed="true"]::after{
+  content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid var(--amber);opacity:.65;
+}
+.sw.t-departure{background:linear-gradient(135deg,#0A0F18 48%,#F0A93B 48%)}
+.sw.t-terminal {background:linear-gradient(135deg,#0A1114 48%,#52E39B 48%)}
+.sw.t-redeye   {background:linear-gradient(135deg,#120C1B 48%,#FF7A6B 48%)}
+.sw.t-daylight {background:linear-gradient(135deg,#FFFFFF 48%,#B4530A 48%)}
+@media(max-width:620px){
+  .swatches .lbl{display:none}
+  .swatches{gap:7px}
+  .brand{font-size:10px;letter-spacing:.12em}
+  .brand .role-suffix{display:none}   /* the four swatches need the room */
+  .topbar{padding:11px var(--gut);gap:10px}
+  .sw{width:20px;height:20px}
+}
+/* the fixed bar would otherwise sit on top of the first line of the hero */
+.hero{padding-top:clamp(132px,17vh,196px)}
+
 /* ---------- hero ---------- */
-.hero{padding-top:clamp(104px,16vh,168px);padding-bottom:clamp(80px,10vw,124px)}
+.hero{padding-bottom:clamp(80px,10vw,124px)}
 .status{
   display:inline-flex;align-items:center;gap:10px;
   border:1px solid var(--edge);border-radius:999px;
@@ -268,6 +400,59 @@ h1 .thin{font-weight:500;color:var(--muted);display:block;letter-spacing:-.032em
   .leg .body{padding-top:10px}
 }
 
+/* ---------- bug sweep (hero arcade) ---------- */
+.arcade{
+  border-bottom:1px solid var(--edge);background:rgba(7,11,19,.62);backdrop-filter:blur(10px);
+}
+.arcade-bar{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:18px var(--gut);max-width:var(--maxw);margin:0 auto;
+}
+.arcade-bar .lead{display:flex;align-items:center;gap:12px;flex:1;min-width:180px}
+.arcade-bar .blip{
+  width:8px;height:8px;border-radius:2px;background:var(--bad);flex:0 0 8px;
+  animation:blip 1.8s ease-in-out infinite;
+}
+@keyframes blip{0%,100%{opacity:.35;transform:scale(.85)}50%{opacity:1;transform:scale(1)}}
+.arcade-bar .txt{font-size:14.5px;color:var(--soft)}
+.arcade-bar .txt b{color:var(--ink);font-weight:500}
+.arcade-toggle{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  padding:11px 20px;border:1px solid var(--amber-dim);border-radius:2px;cursor:pointer;
+  background:rgba(240,169,59,.08);color:var(--amber);
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.arcade-toggle:hover{background:rgba(240,169,59,.16);border-color:var(--amber);transform:translateY(-1px)}
+.arcade-toggle:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+
+.arcade-body{display:none;border-top:1px solid var(--edge)}
+.arcade-body.on{display:block;animation:fade .35s both}
+.arcade-in{max-width:var(--maxw);margin:0 auto;padding:22px var(--gut) 26px}
+.hud{
+  display:flex;gap:22px;flex-wrap:wrap;align-items:baseline;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  margin-bottom:12px;
+}
+.hud b{color:var(--amber);font-weight:500;font-variant-numeric:tabular-nums}
+.hud .cmb{color:var(--good)}
+.hud .rules{margin-left:auto;text-transform:none;letter-spacing:.02em;font-family:var(--body);font-size:12.5px}
+#bugCanvas{
+  display:block;width:100%;height:250px;border:1px solid var(--edge);border-radius:3px;
+  background:linear-gradient(180deg, rgba(8,13,22,.9), rgba(5,8,14,.9));
+  cursor:crosshair;touch-action:manipulation;
+}
+.arcade-over{
+  display:none;margin-top:14px;padding:16px 18px;border:1px solid var(--amber-dim);border-radius:3px;
+  background:rgba(240,169,59,.06);
+}
+.arcade-over.on{display:flex;gap:18px;align-items:center;flex-wrap:wrap;animation:fade .3s both}
+.arcade-over .fs{font-family:var(--display);font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.arcade-over .fl{color:var(--soft);font-size:14.5px;flex:1;min-width:200px}
+@media(max-width:820px){
+  #bugCanvas{height:210px}
+  .hud .rules{margin-left:0;width:100%}
+}
+
 /* ---------- sprint triage game ---------- */
 .game{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:clamp(30px,5vw,64px);align-items:start}
 @media(max-width:900px){.game{grid-template-columns:1fr}}
@@ -294,8 +479,8 @@ h1 .thin{font-weight:500;color:var(--muted);display:block;letter-spacing:-.032em
   font-size:13.5px;color:var(--muted);min-height:3.2em;
 }
 .tkt .why b{font-weight:500}
-.tkt .why.right b{color:#5ED6A4}
-.tkt .why.wrong b{color:#E8734A}
+.tkt .why.right b{color:var(--good)}
+.tkt .why.wrong b{color:var(--bad)}
 
 .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
 .pick{
@@ -403,9 +588,10 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
   width:34px;height:34px;flex:0 0 34px;border-radius:2px;display:grid;place-items:center;
   border:1px solid var(--edge);color:var(--amber);font-family:var(--mono);font-size:11px;
 }
-.way .t{font-size:15px;font-weight:500}
-.way .d{font-size:12.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.04em}
-.way .grow{flex:1;min-width:0}
+/* both are spans, so they need to be told to stack */
+.way .grow{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.way .t{display:block;font-size:15px;font-weight:500;line-height:1.3}
+.way .d{display:block;font-size:12.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.03em;line-height:1.35}
 .way .d,.way .t{overflow-wrap:anywhere}
 .sheet-close{
   position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:2px;
@@ -468,11 +654,10 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
   .head{margin-bottom:38px}
   h1{font-size:clamp(42px,13vw,72px);margin-top:24px}
   h2{font-size:clamp(27px,6.6vw,38px)}
-  .hero{padding-top:clamp(76px,12vh,108px);padding-bottom:64px}
+  .hero{padding-top:clamp(104px,14vh,132px);padding-bottom:64px}
   .thesis,.lede{font-size:16.5px}
   .cta .btn{flex:1 1 auto;justify-content:center}
-  .veil{background:
-    linear-gradient(180deg, rgba(4,6,11,.62) 0%, rgba(4,6,11,.34) 26%, rgba(4,6,11,.86) 82%, var(--void) 100%)}
+  .veil{background:var(--veil-mobile)}
   .ledger div{padding:22px var(--gut)}
   .rolecol{padding:28px 24px}
   .certs-head{margin-top:44px}
@@ -538,9 +723,20 @@ img{max-width:100%}
   </div>
 </div>
 
+<header class="topbar" id="topbar">
+  <a class="brand" href="#top"><b>Sarransh Agrawal</b><span class="role-suffix"> &middot; Product Owner</span></a>
+  <div class="swatches" role="group" aria-label="Colour theme">
+    <span class="lbl">Theme</span>
+    <button class="sw t-departure" type="button" data-theme-set="departure" aria-pressed="true"  title="Departure" aria-label="Departure theme"></button>
+    <button class="sw t-terminal"  type="button" data-theme-set="terminal"  aria-pressed="false" title="Terminal"  aria-label="Terminal theme"></button>
+    <button class="sw t-redeye"    type="button" data-theme-set="redeye"    aria-pressed="false" title="Redeye"    aria-label="Redeye theme"></button>
+    <button class="sw t-daylight"  type="button" data-theme-set="daylight"  aria-pressed="false" title="Daylight"  aria-label="Daylight theme"></button>
+  </div>
+</header>
+
 <div class="wrap" id="wrap">
 
-  <header class="hero shell">
+  <header class="hero shell" id="top">
     <div class="status">
       <span class="dot"></span>
       <span class="mono">Open to Product Owner &amp; APM roles</span>
@@ -568,6 +764,37 @@ img{max-width:100%}
     <div><div class="v" data-count="2">2</div><div class="k mono">Products owned end&#8209;to&#8209;end</div></div>
     <div><div class="v" data-count="20" data-suffix="+">20+</div><div class="k mono">Cross&#8209;functional team</div></div>
     <div><div class="v" data-count="10">10</div><div class="k mono">Verifiable certifications</div></div>
+  </div>
+
+
+  <div class="arcade">
+    <div class="arcade-bar">
+      <span class="lead"><span class="blip"></span>
+        <span class="txt"><b>Bug sweep.</b> Twenty seconds. Squash the defects, leave the feature requests alone.</span>
+      </span>
+      <button class="arcade-toggle" type="button" id="arcadeToggle" aria-expanded="false" aria-controls="arcadeBody">Play</button>
+    </div>
+
+    <div class="arcade-body" id="arcadeBody">
+      <div class="arcade-in">
+        <div class="hud">
+          <span>Score <b id="bScore">0</b></span>
+          <span>Time <b id="bTime">20</b>s</span>
+          <span class="cmb" id="bCombo"></span>
+          <span class="rules">
+            <span style="color:var(--bad)">&#9679;</span> P1 defect +25 &nbsp;
+            <span style="color:var(--muted)">&#9679;</span> minor +10 &nbsp;
+            <span style="color:var(--amber)">&#9670;</span> feature request &minus;15
+          </span>
+        </div>
+        <canvas id="bugCanvas" aria-label="Bug sweep mini game"></canvas>
+        <div class="arcade-over" id="bOver">
+          <span class="fs" id="bFinal">0</span>
+          <span class="fl" id="bVerdict"></span>
+          <button class="btn" type="button" id="bAgain">Play again</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- 01 ---------------------------------------------------------- -->
@@ -1033,7 +1260,7 @@ img{max-width:100%}
   <div class="sheet-in">
     <button class="sheet-close" type="button" data-close aria-label="Close">&times;</button>
     <h3 id="sheetTitle">Let's talk.</h3>
-    <p class="sub">Pick whichever is easiest. All four reach me directly.</p>
+    <p class="sub">Pick whichever is easiest. Every one of these reaches me directly.</p>
 
     <div class="ways">
       <a class="way" id="wayGmail" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=sarransh12345%40gmail.com&amp;su=Product%20Owner%20role" target="_blank" rel="noopener">
@@ -1069,6 +1296,63 @@ img{max-width:100%}
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.documentElement.classList.add('js');
+
+
+  /* ================= theme switcher =================
+     One signature default, remembered per visitor. The WebGL scene is
+     recoloured through sceneTheme(), which the globe registers below. */
+  var THEMES = {
+    departure: { accent: 0xF0A93B, second: 0x5EC8E5, star: 0xBFD4EA, dust: 0x2C4A63,
+                 grat: 0x1B3040, ringA: 0x3D6C8C, ringB: 0x28455C, route: 0x27506B,
+                 core: 0x060A11, halo: '0.30,0.66,0.86', rim: '0.94,0.66,0.23',
+                 dot: 'rgba(240,169,59,.95)', starOpacity: 1 },
+    terminal:  { accent: 0x52E39B, second: 0x7FD4C1, star: 0xBFEEDA, dust: 0x21514A,
+                 grat: 0x14302C, ringA: 0x2F7A66, ringB: 0x1C4B41, route: 0x1F5A4C,
+                 core: 0x05100F, halo: '0.24,0.78,0.60', rim: '0.32,0.89,0.61',
+                 dot: 'rgba(82,227,155,.95)', starOpacity: 1 },
+    redeye:    { accent: 0xFF7A6B, second: 0xB48CF7, star: 0xE4D3F2, dust: 0x4A2F63,
+                 grat: 0x2E1C40, ringA: 0x6A4A8E, ringB: 0x3E2A55, route: 0x50336B,
+                 core: 0x0C0716, halo: '0.62,0.42,0.92', rim: '1.00,0.48,0.42',
+                 dot: 'rgba(255,122,107,.95)', starOpacity: 1 },
+    daylight:  { accent: 0xB4530A, second: 0x0E6E86, star: 0x9FB0BE, dust: 0xAFBAC6,
+                 grat: 0xC7CFD8, ringA: 0x8FA3B2, ringB: 0xB9C4CE, route: 0xA8B6C4,
+                 core: 0xF1EDE4, halo: '0.55,0.66,0.74', rim: '0.71,0.33,0.04',
+                 dot: 'rgba(180,83,10,.95)', starOpacity: 0.5 }
+  };
+  var THEME_KEY = 'sa-theme';
+  var sceneTheme = null;          // the globe fills this in once it is built
+  var currentTheme = 'departure';
+
+  function applyTheme(name, remember) {
+    if (!THEMES[name]) name = 'departure';
+    currentTheme = name;
+    if (name === 'departure') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', name);
+
+    document.querySelectorAll('[data-theme-set]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-theme-set') === name ? 'true' : 'false');
+    });
+    if (remember) { try { localStorage.setItem(THEME_KEY, name); } catch (e) {} }
+    if (sceneTheme) sceneTheme(THEMES[name]);
+  }
+
+  (function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+    applyTheme(saved || 'departure', false);
+    document.querySelectorAll('[data-theme-set]').forEach(function (b) {
+      b.addEventListener('click', function () { applyTheme(b.getAttribute('data-theme-set'), true); });
+    });
+  })();
+
+  /* the bar only grows a background once you have left the top */
+  (function stickyBar() {
+    var bar = document.getElementById('topbar');
+    if (!bar) return;
+    function onScroll() { bar.classList.toggle('stuck', window.scrollY > 24); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
 
   /* ================= contact sheet ================= */
   var sheet = document.getElementById('sheet');
@@ -1351,29 +1635,35 @@ img{max-width:100%}
       transparent: true, opacity: cfg[3], depthWrite: false, blending: THREE.AdditiveBlending
     }));
     scene.add(pts);
-    starShells.push({ mesh: pts, base: cfg[2] * 2.6, drift: 0.004 + Math.random() * 0.01 });
+    starShells.push({ mesh: pts, base: cfg[2] * 2.6, baseOpacity: cfg[3],
+                      drift: 0.004 + Math.random() * 0.01 });
   });
 
-  world.add(new THREE.Mesh(
-    new THREE.SphereGeometry(R * 0.985, 64, 48),
-    new THREE.MeshBasicMaterial({ color: 0x060A11 })
-  ));
+  var coreMat = new THREE.MeshBasicMaterial({ color: 0x060A11 });
+  world.add(new THREE.Mesh(new THREE.SphereGeometry(R * 0.985, 64, 48), coreMat));
 
   var atmoVert = 'varying vec3 vN;void main(){vN=normalize(normalMatrix*normal);' +
                  'gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
-  function atmoFrag(rgb, power, mul) {
-    return 'varying vec3 vN;void main(){float f=pow(' + power.toFixed(2) +
-           '-dot(vN,vec3(0.0,0.0,1.0)),3.0);gl_FragColor=vec4(vec3(' + rgb + '),1.0)*f*' +
-           mul.toFixed(2) + ';}';
+  function atmoFrag(power, mul) {
+    return 'uniform vec3 uCol;varying vec3 vN;void main(){float f=pow(' + power.toFixed(2) +
+           '-dot(vN,vec3(0.0,0.0,1.0)),3.0);gl_FragColor=vec4(uCol,1.0)*f*' + mul.toFixed(2) + ';}';
   }
-  world.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.19, 64, 48), new THREE.ShaderMaterial({
-    vertexShader: atmoVert, fragmentShader: atmoFrag('0.30,0.66,0.86', 0.72, 1.0),
+  function rgbVec(str) {
+    var p = str.split(',');
+    return new THREE.Vector3(parseFloat(p[0]), parseFloat(p[1]), parseFloat(p[2]));
+  }
+  var haloMat = new THREE.ShaderMaterial({
+    uniforms: { uCol: { value: rgbVec('0.30,0.66,0.86') } },
+    vertexShader: atmoVert, fragmentShader: atmoFrag(0.72, 1.0),
     blending: THREE.AdditiveBlending, side: THREE.BackSide, transparent: true, depthWrite: false
-  })));
-  world.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.02, 64, 48), new THREE.ShaderMaterial({
-    vertexShader: atmoVert, fragmentShader: atmoFrag('0.94,0.66,0.23', 0.58, 0.62),
+  });
+  var rimMat = new THREE.ShaderMaterial({
+    uniforms: { uCol: { value: rgbVec('0.94,0.66,0.23') } },
+    vertexShader: atmoVert, fragmentShader: atmoFrag(0.58, 0.62),
     blending: THREE.AdditiveBlending, side: THREE.FrontSide, transparent: true, depthWrite: false
-  })));
+  });
+  world.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.19, 64, 48), haloMat));
+  world.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.02, 64, 48), rimMat));
 
   function toVec(latDeg, lonDeg, r) {
     var la = latDeg * Math.PI / 180, lo = lonDeg * Math.PI / 180;
@@ -1390,12 +1680,13 @@ img{max-width:100%}
   }
   var pg = new THREE.BufferGeometry();
   pg.setAttribute('position', new THREE.Float32BufferAttribute(pv, 3));
-  world.add(new THREE.Points(pg, new THREE.PointsMaterial({
+  var dustMat = new THREE.PointsMaterial({
     color: 0x2C4A63, size: 0.016, sizeAttenuation: true,
-    transparent: true, opacity: 0.85, depthWrite: false
-  })));
+    transparent: true, opacity: 0.85, depthWrite: false });
+  world.add(new THREE.Points(pg, dustMat));
 
   var grat = new THREE.Group();
+  var gratMat = new THREE.LineBasicMaterial({ color: 0x1B3040, transparent: true, opacity: 0.55 });
   function latLine(rx, ry, radius, yOffset) {
     var v = [];
     for (var a = 0; a <= 128; a++) {
@@ -1404,8 +1695,7 @@ img{max-width:100%}
     }
     var g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3));
-    var ln = new THREE.Line(g, new THREE.LineBasicMaterial({
-      color: 0x1B3040, transparent: true, opacity: 0.55 }));
+    var ln = new THREE.Line(g, gratMat);
     ln.rotation.set(rx, ry, 0);
     ln.position.y = yOffset || 0;
     grat.add(ln);
@@ -1431,13 +1721,15 @@ img{max-width:100%}
   });
   var hg = new THREE.BufferGeometry();
   hg.setAttribute('position', new THREE.Float32BufferAttribute(hv, 3));
-  world.add(new THREE.Points(hg, new THREE.PointsMaterial({
+  var hubMat = new THREE.PointsMaterial({
     map: dotAmber, color: AMBER, size: 0.30, sizeAttenuation: true,
-    transparent: true, opacity: 0.95, depthWrite: false, blending: THREE.AdditiveBlending })));
+    transparent: true, opacity: 0.95, depthWrite: false, blending: THREE.AdditiveBlending });
+  world.add(new THREE.Points(hg, hubMat));
   var bg = new THREE.BufferGeometry();
   bg.setAttribute('position', new THREE.Float32BufferAttribute(beamV, 3));
-  world.add(new THREE.LineSegments(bg, new THREE.LineBasicMaterial({
-    color: AMBER, transparent: true, opacity: 0.34, blending: THREE.AdditiveBlending })));
+  var beamMat = new THREE.LineBasicMaterial({
+    color: AMBER, transparent: true, opacity: 0.34, blending: THREE.AdditiveBlending });
+  world.add(new THREE.LineSegments(bg, beamMat));
 
   var ring = new THREE.Group();
   ring.rotation.set(Math.PI / 2 - 0.42, 0, 0.22);
@@ -1449,8 +1741,8 @@ img{max-width:100%}
   }
   var tg = new THREE.BufferGeometry();
   tg.setAttribute('position', new THREE.Float32BufferAttribute(tickV, 3));
-  ring.add(new THREE.LineSegments(tg, new THREE.LineBasicMaterial({
-    color: 0x3D6C8C, transparent: true, opacity: 0.5 })));
+  var tickMat = new THREE.LineBasicMaterial({ color: 0x3D6C8C, transparent: true, opacity: 0.5 });
+  ring.add(new THREE.LineSegments(tg, tickMat));
   var hoopV = [];
   for (var hq = 0; hq <= 200; hq++) {
     var ha = hq / 200 * Math.PI * 2;
@@ -1458,8 +1750,8 @@ img{max-width:100%}
   }
   var hg2 = new THREE.BufferGeometry();
   hg2.setAttribute('position', new THREE.Float32BufferAttribute(hoopV, 3));
-  ring.add(new THREE.Line(hg2, new THREE.LineBasicMaterial({
-    color: 0x28455C, transparent: true, opacity: 0.65 })));
+  var hoopMat = new THREE.LineBasicMaterial({ color: 0x28455C, transparent: true, opacity: 0.65 });
+  ring.add(new THREE.Line(hg2, hoopMat));
   rig.add(ring);
 
   var PAIRS = [
@@ -1467,6 +1759,7 @@ img{max-width:100%}
     [1, 10], [2, 11], [1, 12], [4, 13], [0, 14], [1, 15], [3, 4], [2, 5]
   ];
   var SEGS = 96, HEAD = 16, routes = [];
+  var routeBaseMat = new THREE.LineBasicMaterial({ color: 0x27506B, transparent: true, opacity: 0.5 });
   PAIRS.forEach(function (pr, idx) {
     var a = toVec(HUBS[pr[0]][0], HUBS[pr[0]][1], R);
     var b = toVec(HUBS[pr[1]][0], HUBS[pr[1]][1], R);
@@ -1479,8 +1772,7 @@ img{max-width:100%}
     }
     var base = new THREE.BufferGeometry();
     base.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
-    world.add(new THREE.Line(base, new THREE.LineBasicMaterial({
-      color: 0x27506B, transparent: true, opacity: 0.5 })));
+    world.add(new THREE.Line(base, routeBaseMat));
 
     var head = new THREE.BufferGeometry();
     head.setAttribute('position', new THREE.Float32BufferAttribute(verts.slice(), 3));
@@ -1503,8 +1795,9 @@ img{max-width:100%}
     }
     var hgeo = new THREE.BufferGeometry();
     hgeo.setAttribute('position', new THREE.Float32BufferAttribute(hoop, 3));
-    orbit.add(new THREE.Line(hgeo, new THREE.LineBasicMaterial({
-      color: 0x1E3446, transparent: true, opacity: 0.5 })));
+    var hoopLine = new THREE.Line(hgeo, new THREE.LineBasicMaterial({
+      color: 0x1E3446, transparent: true, opacity: 0.5 }));
+    orbit.add(hoopLine);
 
     var body = new THREE.Points(
       (function () {
@@ -1521,13 +1814,47 @@ img{max-width:100%}
     var tailN = 26, tv = new Float32Array(tailN * 3);
     var tgeo = new THREE.BufferGeometry();
     tgeo.setAttribute('position', new THREE.BufferAttribute(tv, 3));
-    orbit.add(new THREE.Line(tgeo, new THREE.LineBasicMaterial({
-      color: cfg[3], transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending })));
+    var tailLine = new THREE.Line(tgeo, new THREE.LineBasicMaterial({
+      color: cfg[3], transparent: true, opacity: 0.4, blending: THREE.AdditiveBlending }));
+    orbit.add(tailLine);
 
     rig.add(orbit);
-    sats.push({ orbit: orbit, body: body, tgeo: tgeo, tv: tv, tailN: tailN,
+    sats.push({ orbit: orbit, body: body, tail: tailLine, hoop: hoopLine,
+                tgeo: tgeo, tv: tv, tailN: tailN,
                 r: cfg[0], speed: cfg[2], a: Math.random() * Math.PI * 2 });
   });
+
+  /* recolour every themed material, and rebuild the two sprite textures */
+  sceneTheme = function (t) {
+    coreMat.color.setHex(t.core);
+    dustMat.color.setHex(t.dust);
+    gratMat.color.setHex(t.grat);
+    hubMat.color.setHex(t.accent);
+    beamMat.color.setHex(t.accent);
+    tickMat.color.setHex(t.ringA);
+    hoopMat.color.setHex(t.ringB);
+    routeBaseMat.color.setHex(t.route);
+    haloMat.uniforms.uCol.value.copy(rgbVec(t.halo));
+    rimMat.uniforms.uCol.value.copy(rgbVec(t.rim));
+
+    var newDot = softDot(t.dot);
+    hubMat.map = newDot; hubMat.needsUpdate = true;
+
+    routes.forEach(function (r, i) { r.line.material.color.setHex(i % 3 === 0 ? t.accent : t.second); });
+    sats.forEach(function (st, i) {
+      var col = i === 0 ? t.accent : (i === 1 ? t.second : t.star);
+      st.body.material.color.setHex(col);
+      st.body.material.map = newDot;
+      st.body.material.needsUpdate = true;
+      st.tail.material.color.setHex(col);
+      st.hoop.material.color.setHex(t.grat);
+    });
+    starShells.forEach(function (sh) {
+      sh.mesh.material.color.setHex(t.star);
+      sh.mesh.material.opacity = sh.baseOpacity * t.starOpacity;
+    });
+  };
+  sceneTheme(THEMES[currentTheme]);
 
   /* ---- interaction ---- */
   var mx = 0, my = 0, tx = 0, ty = 0;
