@@ -434,6 +434,33 @@ h1 .thin{font-weight:500;color:var(--muted);display:block;letter-spacing:-.032em
   .leg ul{font-size:15px}
 }
 
+/* ---------- no-WebGL fallback ----------
+   If three.js cannot load, or the device refuses a WebGL context, the hero
+   would otherwise be a flat rectangle. Paint the scene in CSS instead. */
+.no-three #globe,.no-webgl #globe{
+  background:
+    /* stars */
+    radial-gradient(1.4px 1.4px at 12% 18%, var(--soft), transparent),
+    radial-gradient(1.2px 1.2px at 78% 12%, var(--soft), transparent),
+    radial-gradient(1.6px 1.6px at 32% 62%, var(--ink), transparent),
+    radial-gradient(1.2px 1.2px at 88% 44%, var(--soft), transparent),
+    radial-gradient(1.1px 1.1px at 58% 82%, var(--soft), transparent),
+    radial-gradient(1.5px 1.5px at 8% 74%, var(--soft), transparent),
+    radial-gradient(1.2px 1.2px at 68% 28%, var(--ink), transparent),
+    radial-gradient(1.3px 1.3px at 44% 8%, var(--soft), transparent),
+    /* the planet: a dark disc with an accent limb */
+    radial-gradient(circle at 72% 34%,
+      transparent 0 21.5%,
+      color-mix(in srgb, var(--sky) 42%, transparent) 21.5% 22.4%,
+      color-mix(in srgb, var(--sky) 12%, transparent) 22.4% 25%,
+      transparent 25%),
+    radial-gradient(circle at 72% 34%, color-mix(in srgb, var(--void) 92%, black) 0 22%, transparent 22%),
+    var(--globe-bg);
+}
+@media(max-width:820px){
+  .no-three #globe,.no-webgl #globe{background-position:center}
+}
+
 /* ---------- page-level 3D ----------
    Each grid is its own perspective container and the lift stays small, so a
    tilted card never grows enough to overlap its neighbour. */
@@ -1294,7 +1321,8 @@ img{max-width:100%}
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        onerror="document.documentElement.classList.add('no-three')"></script>
 <script>
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
