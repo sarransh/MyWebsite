@@ -434,6 +434,22 @@ h1 .thin{font-weight:500;color:var(--muted);display:block;letter-spacing:-.032em
   .leg ul{font-size:15px}
 }
 
+/* ---------- page-level 3D ----------
+   Each grid is its own perspective container and the lift stays small, so a
+   tilted card never grows enough to overlap its neighbour. */
+.grid,.wins,.certs{perspective:1100px}
+.card,.win,.cert{will-change:transform}
+.ledger div{transition:transform .3s, background .3s}
+.ledger div:hover{transform:translateZ(22px)}
+.ledger{perspective:900px}
+.roles{perspective:1400px}
+.rolecol{transition:transform .45s cubic-bezier(.2,.7,.3,1)}
+
+@media(hover:none),(prefers-reduced-motion:reduce){
+  .ledger div:hover{transform:none}
+  .rolecol{transition:none}
+}
+
 /* ---------- bug sweep (hero arcade) ---------- */
 .arcade{
   border-bottom:1px solid var(--edge);background:rgba(7,11,19,.62);backdrop-filter:blur(10px);
@@ -1815,6 +1831,45 @@ img{max-width:100%}
 
     reset();
   })();
+
+
+  /* ================= pointer tilt =================
+     Real depth on the things that are already discrete objects. Angles are
+     small and the lift is 12px, which keeps a tilted card inside its cell. */
+  if (!reduce && window.matchMedia('(hover: hover)').matches) {
+    var tiltables = document.querySelectorAll('.card, .win, .cert');
+    tiltables.forEach(function (el) {
+      el.addEventListener('pointermove', function (ev) {
+        var b = el.getBoundingClientRect();
+        var px = (ev.clientX - b.left) / b.width - 0.5;
+        var py = (ev.clientY - b.top) / b.height - 0.5;
+        el.style.transform =
+          'rotateY(' + (px * 7).toFixed(2) + 'deg) rotateX(' + (-py * 7).toFixed(2) +
+          'deg) translateZ(12px)';
+        el.style.zIndex = '4';
+      });
+      el.addEventListener('pointerleave', function () {
+        el.style.transform = '';
+        el.style.zIndex = '';
+      });
+    });
+
+    /* the two role columns lean away from each other as the pointer crosses them */
+    var roles = document.querySelector('.roles');
+    if (roles) {
+      roles.addEventListener('pointermove', function (ev) {
+        var b = roles.getBoundingClientRect();
+        var px = (ev.clientX - b.left) / b.width - 0.5;
+        roles.querySelectorAll('.rolecol').forEach(function (col, i) {
+          var dir = i === 0 ? 1 : -1;
+          col.style.transform = 'rotateY(' + (px * 3.2 * dir).toFixed(2) + 'deg)';
+        });
+      });
+      roles.addEventListener('pointerleave', function () {
+        roles.querySelectorAll('.rolecol').forEach(function (col) { col.style.transform = ''; });
+      });
+    }
+  }
 
   /* ================= the globe ================= */
   var cv = document.getElementById('globe');
