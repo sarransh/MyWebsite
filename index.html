@@ -273,20 +273,21 @@ h1 .thin{font-weight:500;color:var(--muted);display:block;letter-spacing:-.032em
 
 /* ---------- ledger ---------- */
 .ledger{
-  display:grid;grid-template-columns:repeat(4,1fr);
+  /* minmax(0,1fr) or a non-breaking word widens the column past the viewport */
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
   border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);
   background:rgba(7,11,19,.7);backdrop-filter:blur(10px);
 }
-.ledger div{padding:30px var(--gut);border-left:1px solid var(--edge);transition:background .3s}
+.ledger div{padding:30px clamp(20px,2.4vw,34px);border-left:1px solid var(--edge);transition:background .3s}
 .ledger div:first-child{border-left:0}
 .ledger div:hover{background:rgba(240,169,59,.045)}
 .ledger .v{
   font-family:var(--display);font-weight:800;font-size:clamp(28px,3.6vw,38px);
   letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1;
 }
-.ledger .k{margin-top:11px}
+.ledger .k{margin-top:11px;overflow-wrap:anywhere}
 @media(max-width:780px){
-  .ledger{grid-template-columns:repeat(2,1fr)}
+  .ledger{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ledger div:nth-child(3){border-left:0}
   .ledger div:nth-child(n+3){border-top:1px solid var(--edge)}
 }
@@ -318,87 +319,45 @@ h1 .thin{font-weight:500;color:var(--muted);display:block;letter-spacing:-.032em
 .rolecol li:hover::before{width:16px;background:var(--amber)}
 .rolecol.ux li:hover::before{background:var(--sky)}
 
-/* ---------- skills ---------- */
-.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(30px,4.5vw,60px)}
-@media(max-width:820px){.skills{grid-template-columns:1fr}}
-.skillset + .skillset{margin-top:clamp(30px,4vw,44px)}
-.skillset h4{
+/* ---------- skills ----------
+   Sixty bordered chips read as sixty competing objects. One row per
+   discipline, text not boxes, and a panel so the globe stops interfering. */
+.skillsheet{
+  border:1px solid var(--edge);border-radius:4px;
+  background:color-mix(in srgb, var(--panel) 82%, transparent);
+  background:rgba(10,15,24,.82);
+  backdrop-filter:blur(14px);
+  overflow:hidden;
+}
+:root[data-theme="daylight"] .skillsheet{background:rgba(255,255,255,.9)}
+:root[data-theme="terminal"] .skillsheet{background:rgba(10,17,20,.84)}
+:root[data-theme="redeye"]   .skillsheet{background:rgba(18,12,27,.84)}
+
+.srow{
+  display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);
+  gap:clamp(16px,3vw,40px);
+  padding:clamp(22px,3vw,30px) clamp(22px,3.4vw,38px);
+  border-top:1px solid var(--edge);
+  transition:background .3s;
+}
+.srow:first-child{border-top:0}
+.srow:hover{background:color-mix(in srgb, var(--amber) 4%, transparent)}
+.srow dt{margin:0}
+.srow .cat{
   font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--amber);margin:0 0 16px;
-  padding-bottom:12px;border-bottom:1px solid var(--edge);
-  display:flex;justify-content:space-between;
+  text-transform:uppercase;color:var(--amber);display:block;
 }
-.skillset h4 span{color:var(--dim)}
-.tags{display:flex;flex-wrap:wrap;gap:8px}
-.tag2{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;
-  padding:8px 13px;border:1px solid var(--edge);border-radius:2px;
-  color:#A3B3C7;background:rgba(13,19,31,.6);
-  transition:border-color .25s,color .25s,transform .25s,background .25s;
+.srow .cat-note{
+  display:block;margin-top:7px;font-size:12.5px;color:var(--dim);
+  font-family:var(--body);letter-spacing:0;text-transform:none;line-height:1.45;
 }
-.tag2:hover{border-color:var(--amber-dim);color:var(--amber);transform:translateY(-2px);background:rgba(240,169,59,.06)}
-.tag2.hot{border-color:#24485E;color:var(--sky)}
-.tag2.hot:hover{border-color:var(--sky);color:var(--sky)}
-
-/* ---------- work ---------- */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--edge);border:1px solid var(--edge)}
-@media(max-width:940px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){.grid{grid-template-columns:1fr}}
-.card{
-  background:var(--panel);padding:30px 26px 30px;
-  display:flex;flex-direction:column;gap:12px;
-  transition:background .25s,transform .35s cubic-bezier(.2,.7,.3,1),box-shadow .35s;
-}
-.card:hover{
-  background:var(--panel-2);position:relative;z-index:3;
-  transform:translateY(-4px);box-shadow:0 34px 70px -34px rgba(0,0,0,.95);
-}
-.card .sector{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
-.card h3{font-size:21px;font-weight:700;letter-spacing:-.02em}
-.card p{color:var(--muted);font-size:15px;line-height:1.6}
-.card .own{
-  margin-top:auto;padding-top:16px;border-top:1px dashed var(--edge);
-  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);
-}
-.card .own b{color:var(--sky);font-weight:400}
-
-/* ---------- track record ---------- */
-.wins{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.5vw,26px)}
-@media(max-width:760px){.wins{grid-template-columns:1fr}}
-.win{
-  padding:30px 28px;background:rgba(11,16,26,.7);
-  border:1px solid var(--edge);border-left:2px solid var(--amber-dim);
-  transition:transform .35s cubic-bezier(.2,.7,.3,1),border-left-color .3s,box-shadow .35s;
-}
-.win:hover{transform:translateY(-4px);border-left-color:var(--amber);box-shadow:0 30px 60px -34px rgba(0,0,0,.95)}
-.win h3{font-size:18px;font-weight:700;letter-spacing:-.015em;line-height:1.3}
-.win p{color:var(--muted);font-size:15px;margin-top:10px}
-
-/* ---------- itinerary ---------- */
-.leg{display:grid;grid-template-columns:minmax(0,168px) 18px minmax(0,1fr);gap:clamp(14px,3vw,44px)}
-.leg .when{font-family:var(--mono);font-size:12px;color:var(--muted);padding:30px 0 0;letter-spacing:.07em}
-.leg .when .seg{display:block;color:var(--amber);font-size:11px;letter-spacing:.18em;margin-bottom:6px}
-.leg .spine{position:relative}
-.leg .spine::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:1px;background:var(--edge)}
-.leg .spine::after{
-  content:"";position:absolute;left:4px;top:36px;width:9px;height:9px;border-radius:50%;
-  background:var(--void);border:1px solid var(--muted);transition:background .3s,border-color .3s;
-}
-.leg:hover .spine::after{background:var(--amber);border-color:var(--amber)}
-.leg.now .spine::after{background:var(--amber);border-color:var(--amber);box-shadow:0 0 0 5px rgba(240,169,59,.14)}
-.leg .body{padding:28px 0 34px;border-bottom:1px solid var(--edge);transition:transform .35s}
-.leg:hover .body{transform:translateX(6px)}
-.leg:last-child .body{border-bottom:0}
-.leg h3{font-size:clamp(20px,2.4vw,25px);font-weight:700;letter-spacing:-.022em}
-.leg .org{color:var(--muted);font-size:15px;margin-top:5px}
-.leg ul{margin:16px 0 0;padding-left:18px;color:#A4B3C6;font-size:15.5px}
-.leg li{margin-bottom:8px}
-.leg li::marker{color:var(--amber-dim)}
+.srow dd{margin:0;font-size:16px;line-height:1.85;color:var(--soft)}
+.srow dd b{color:var(--ink);font-weight:500}
+.srow dd .sep{color:var(--edge-2);padding:0 7px}
 @media(max-width:760px){
-  .leg{grid-template-columns:1fr}
-  .leg .spine{display:none}
-  .leg .when{padding-bottom:0}
-  .leg .body{padding-top:10px}
+  .srow{grid-template-columns:1fr;gap:10px;padding:22px}
+  .srow dd{font-size:15.5px;line-height:1.75}
+  .srow .cat-note{display:none}
 }
 
 /* ---------- bug sweep (hero arcade) ---------- */
@@ -659,7 +618,7 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
   .thesis,.lede{font-size:16.5px}
   .cta .btn{flex:1 1 auto;justify-content:center}
   .veil{background:var(--veil-mobile)}
-  .ledger div{padding:22px var(--gut)}
+  .ledger div{padding:22px clamp(18px,4vw,26px)}
   .rolecol{padding:28px 24px}
   .certs-head{margin-top:44px}
   .leg .when{padding-top:22px}
@@ -678,7 +637,6 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
   :root{--gut:18px}
   h1{font-size:clamp(38px,14vw,58px)}
   .role{font-size:11px;letter-spacing:.14em;gap:8px 10px}
-  .tag2{font-size:11px;padding:7px 11px}
   .deck{height:360px}
   .sheet-in{padding:24px 20px}
   .way{padding:14px 14px;gap:12px}
@@ -687,7 +645,7 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
 
 /* touch devices: no hover lift, and the pointer parallax never fires */
 @media(hover:none){
-  .card:hover,.win:hover,.cert:hover,.tag2:hover,.btn:hover{transform:none}
+  .card:hover,.win:hover,.cert:hover,.btn:hover{transform:none}
   .leg:hover .body{transform:none}
   .card:hover{box-shadow:none}
 }
@@ -845,86 +803,40 @@ img{max-width:100%}
     <div class="head rv">
       <div class="tag"><span class="n">02</span><span class="mono">Skills</span></div>
       <h2>What I actually do all day.</h2>
+      <p class="lede" style="margin-top:22px">Seven disciplines. The bold ones are where I
+        would expect to be judged.</p>
     </div>
 
-    <div class="skills">
-      <div>
-        <div class="skillset rv">
-          <h4>Product <span>core</span></h4>
-          <div class="tags stagger">
-            <span class="tag2 hot">Product Ownership</span><span class="tag2 hot">Backlog Ownership</span>
-            <span class="tag2">Product Discovery</span><span class="tag2">Roadmapping</span>
-            <span class="tag2">User Stories</span><span class="tag2">Acceptance Criteria</span>
-            <span class="tag2">PRDs</span><span class="tag2">RICE</span><span class="tag2">MoSCoW</span>
-            <span class="tag2">Release Planning</span><span class="tag2">Stakeholder Management</span>
-          </div>
-        </div>
-
-        <div class="skillset rv">
-          <h4>Design <span>where I started</span></h4>
-          <div class="tags stagger">
-            <span class="tag2 hot">UX Design</span><span class="tag2 hot">Design Systems</span>
-            <span class="tag2">Wireframing</span><span class="tag2">Prototyping</span>
-            <span class="tag2">Interaction Design</span><span class="tag2">Journey Mapping</span>
-            <span class="tag2">Personas</span><span class="tag2">Responsive Design</span>
-            <span class="tag2">Design Handoff</span>
-          </div>
-        </div>
-
-        <div class="skillset rv">
-          <h4>Agile <span>delivery</span></h4>
-          <div class="tags stagger">
-            <span class="tag2">Scrum</span><span class="tag2">Kanban</span><span class="tag2">Sprint Planning</span>
-            <span class="tag2">Backlog Grooming</span><span class="tag2">Retrospectives</span>
-            <span class="tag2">Velocity Tracking</span><span class="tag2">Team Leadership</span>
-          </div>
-        </div>
+    <dl class="skillsheet rv d1">
+      <div class="srow">
+        <dt><span class="cat">Product</span><span class="cat-note">the core of the job</span></dt>
+        <dd><b>Product ownership</b><span class="sep">/</span><b>Backlog ownership</b><span class="sep">/</span>Discovery<span class="sep">/</span>Roadmapping<span class="sep">/</span>User stories<span class="sep">/</span><b>Acceptance criteria</b><span class="sep">/</span>Prioritisation (RICE, MoSCoW)<span class="sep">/</span>Release planning</dd>
       </div>
-
-      <div>
-        <div class="skillset rv">
-          <h4>Research &amp; data <span>deciding with evidence</span></h4>
-          <div class="tags stagger">
-            <span class="tag2">User Interviews</span><span class="tag2">Usability Testing</span>
-            <span class="tag2">Google Analytics</span><span class="tag2">Hotjar</span>
-            <span class="tag2">Funnel Analysis</span><span class="tag2">Retention</span>
-            <span class="tag2">A/B Testing</span><span class="tag2">CRO</span>
-          </div>
-        </div>
-
-        <div class="skillset rv">
-          <h4>Quality <span>owned, not delegated</span></h4>
-          <div class="tags stagger">
-            <span class="tag2">UAT</span><span class="tag2">Defect Triage</span>
-            <span class="tag2">API Testing &middot; Postman</span><span class="tag2">Release Validation</span>
-            <span class="tag2">New Relic</span>
-          </div>
-        </div>
-
-        <div class="skillset rv">
-          <h4>AI &amp; tools <span>how it gets faster</span></h4>
-          <div class="tags stagger">
-            <span class="tag2 hot">Claude Code</span><span class="tag2">Cursor</span>
-            <span class="tag2">AI&#8209;assisted Prototyping</span><span class="tag2">Workflow Automation</span>
-            <span class="tag2">Figma</span><span class="tag2">FigJam</span><span class="tag2">Miro</span>
-            <span class="tag2">Jira</span><span class="tag2">ClickUp</span><span class="tag2">Confluence</span>
-            <span class="tag2">Supabase</span>
-          </div>
-        </div>
-
-        <div class="skillset rv">
-          <h4>Travel domain <span>the specialist bit</span></h4>
-          <div class="tags stagger">
-            <span class="tag2 hot">GDS</span><span class="tag2 hot">NDC</span>
-            <span class="tag2">Sabre</span><span class="tag2">Amadeus</span><span class="tag2">Verteil</span>
-            <span class="tag2">PKfare</span><span class="tag2">TBO</span><span class="tag2">Stuba</span>
-            <span class="tag2">GRN Connect</span><span class="tag2">Mid&#8209;office Systems</span>
-            <span class="tag2">Booking Flows</span>
-          </div>
-        </div>
+      <div class="srow">
+        <dt><span class="cat">Design</span><span class="cat-note">where I started</span></dt>
+        <dd><b>UX design</b><span class="sep">/</span><b>Design systems</b><span class="sep">/</span>Wireframing<span class="sep">/</span>Prototyping<span class="sep">/</span>Journey mapping<span class="sep">/</span>Design handoff</dd>
       </div>
-    </div>
-  </section>
+      <div class="srow">
+        <dt><span class="cat">Delivery</span><span class="cat-note">how it ships</span></dt>
+        <dd>Scrum<span class="sep">/</span>Kanban<span class="sep">/</span>Sprint planning<span class="sep">/</span>Backlog grooming<span class="sep">/</span>Retrospectives<span class="sep">/</span><b>Leading a 20-person team</b></dd>
+      </div>
+      <div class="srow">
+        <dt><span class="cat">Evidence</span><span class="cat-note">deciding without guessing</span></dt>
+        <dd><b>User interviews</b><span class="sep">/</span>Usability testing<span class="sep">/</span>Google Analytics<span class="sep">/</span>Hotjar<span class="sep">/</span><b>Funnel analysis</b><span class="sep">/</span>A/B testing</dd>
+      </div>
+      <div class="srow">
+        <dt><span class="cat">Quality</span><span class="cat-note">owned, not delegated</span></dt>
+        <dd>UAT<span class="sep">/</span><b>Defect triage</b><span class="sep">/</span>API testing in Postman<span class="sep">/</span>Release validation<span class="sep">/</span>New Relic</dd>
+      </div>
+      <div class="srow">
+        <dt><span class="cat">Tooling</span><span class="cat-note">what is open on my screen</span></dt>
+        <dd><b>Claude Code</b><span class="sep">/</span>Cursor<span class="sep">/</span>Figma<span class="sep">/</span>Miro<span class="sep">/</span>Jira<span class="sep">/</span>ClickUp<span class="sep">/</span>Confluence<span class="sep">/</span>Supabase</dd>
+      </div>
+      <div class="srow">
+        <dt><span class="cat">Travel domain</span><span class="cat-note">the specialist bit</span></dt>
+        <dd><b>GDS</b><span class="sep">/</span><b>NDC</b><span class="sep">/</span>Sabre<span class="sep">/</span>Amadeus<span class="sep">/</span>Verteil<span class="sep">/</span>PKfare<span class="sep">/</span>TBO<span class="sep">/</span>Stuba<span class="sep">/</span>GRN Connect<span class="sep">/</span>Mid-office systems</dd>
+      </div>
+    </dl>
 
   <hr class="rule">
 
