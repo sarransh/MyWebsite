@@ -715,13 +715,13 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
 
 /* ---------- scroll reveal ----------
    Only armed once the script runs, so a page without JS shows everything. */
-.js .rv{opacity:0;transform:translateY(26px)}
-.js .rv.in{opacity:1;transform:none;transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1)}
+/* Transform only. Content is never hidden, so if the sweep never runs the
+   page is still fully readable, just without the rise. */
+.js .rv{transform:translateY(16px)}
+.js .rv.in{transform:none;transition:transform .75s cubic-bezier(.2,.7,.3,1)}
 .js .rv.d1.in{transition-delay:.08s}
 .js .rv.d2.in{transition-delay:.16s}
 .js .rv.d3.in{transition-delay:.24s}
-.js .stagger > *{opacity:0;transform:translateY(14px)}
-.js .stagger.in > *{opacity:1;transform:none;transition:opacity .55s ease-out,transform .55s cubic-bezier(.2,.7,.3,1)}
 
 
 /* ---------- phones and tablets ----------
@@ -773,7 +773,7 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{animation:none!important;transition:none!important}
-  .js .rv,.js .stagger > *{opacity:1;transform:none}
+  .js .rv{transform:none}
   .wrap.sealed{opacity:1}
   #gate{display:none!important}
 }
@@ -1445,50 +1445,67 @@ img{max-width:100%}
     }
   });
 
-  /* ================= scroll reveal ================= */
-  if (!reduce && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    document.querySelectorAll('.rv, .stagger').forEach(function (el) { io.observe(el); });
+  /* ================= scroll reveal =================
+     Deliberately NOT IntersectionObserver. Its callbacks are not delivered
+     while the document is hidden, which left content parked at opacity 0
+     forever. A direct sweep on scroll cannot get stuck. */
+  var revealables = [].slice.call(document.querySelectorAll('.rv'));
 
-    // stagger children of a tag cloud rather than firing them together
-    document.querySelectorAll('.stagger').forEach(function (row) {
-      Array.prototype.forEach.call(row.children, function (kid, i) {
-        kid.style.transitionDelay = Math.min(i * 38, 560) + 'ms';
-      });
-    });
-  } else {
-    document.querySelectorAll('.rv, .stagger').forEach(function (el) { el.classList.add('in'); });
+  function revealAll() {
+    revealables.forEach(function (el) { el.classList.add('in'); });
+    revealables = [];
   }
 
-  /* ================= ledger count-up ================= */
+  function sweep() {
+    if (!revealables.length) return;
+    var h = window.innerHeight;
+    revealables = revealables.filter(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < h * 0.94 && r.bottom > -40) { el.classList.add('in'); return false; }
+      return true;
+    });
+  }
+
+  /* count-ups ride the same sweep */
+  var counters = [].slice.call(document.querySelectorAll('[data-count]'));
   function countUp(el) {
     var target = parseInt(el.getAttribute('data-count'), 10);
     var suffix = el.getAttribute('data-suffix') || '';
-    if (isNaN(target) || reduce) return;
+    if (isNaN(target)) return;
+    if (reduce) { el.textContent = target + suffix; return; }
     var t0 = null, dur = 1100;
-    function step(now) {
+    function stepC(now) {
       if (!t0) t0 = now;
-      var p = Math.min(1, (now - t0) / dur);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased) + suffix;
-      if (p < 1) requestAnimationFrame(step);
+      var pr = Math.min(1, (now - t0) / dur);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - pr, 3))) + suffix;
+      if (pr < 1) requestAnimationFrame(stepC);
     }
-    requestAnimationFrame(step);
+    requestAnimationFrame(stepC);
   }
-  if ('IntersectionObserver' in window) {
-    var io2 = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { countUp(en.target); io2.unobserve(en.target); }
-      });
-    }, { threshold: 0.6 });
-    document.querySelectorAll('[data-count]').forEach(function (el) { io2.observe(el); });
+  function sweepCounters() {
+    if (!counters.length) return;
+    var h = window.innerHeight;
+    counters = counters.filter(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < h * 0.9 && r.bottom > 0) { countUp(el); return false; }
+      return true;
+    });
   }
 
-
+  if (reduce) {
+    revealAll();
+    counters.forEach(function (el) {
+      el.textContent = el.getAttribute('data-count') + (el.getAttribute('data-suffix') || '');
+    });
+    counters = [];
+  } else {
+    var onScroll = function () { sweep(); sweepCounters(); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    sweep(); sweepCounters();
+    // nothing may stay invisible: a last resort if scroll never happens
+    setTimeout(function () { sweep(); sweepCounters(); }, 1200);
+  }
 
   /* ================= bug sweep ================= */
   (function () {
