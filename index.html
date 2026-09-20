@@ -788,6 +788,63 @@ footer{padding:38px 0 56px;color:var(--dim);font-size:13px;display:flex;flex-wra
 *{-webkit-tap-highlight-color:transparent}
 img{max-width:100%}
 [hidden]{display:none!important}
+
+/* ---------- case studies ---------- */
+.cs-list{display:flex;flex-direction:column;gap:clamp(16px,2.2vw,24px)}
+.cs{
+  background:rgba(11,16,26,.72);border:1px solid var(--edge);
+  border-left:2px solid var(--amber-dim);
+  transition:border-left-color .3s,box-shadow .35s;
+}
+:root[data-theme="daylight"] .cs{background:rgba(255,255,255,.86)}
+:root[data-theme="terminal"] .cs{background:rgba(10,17,20,.78)}
+:root[data-theme="redeye"]   .cs{background:rgba(18,12,27,.78)}
+.cs[open]{border-left-color:var(--amber);box-shadow:0 30px 60px -34px rgba(0,0,0,.95)}
+.cs>summary{
+  list-style:none;cursor:pointer;padding:26px clamp(20px,3vw,30px);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 20px;align-items:center;
+}
+.cs>summary::-webkit-details-marker{display:none}
+.cs>summary:hover .cs-t{color:var(--amber)}
+.cs-k{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dim);display:block;margin-bottom:8px;
+}
+.cs-t{font-size:clamp(19px,2.3vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.25;transition:color .25s}
+.cs-d{color:var(--muted);font-size:15px;margin-top:8px;max-width:64ch}
+.cs-more{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--sky);white-space:nowrap;align-self:start;padding-top:6px;
+}
+.cs[open] .cs-more{color:var(--amber)}
+.cs-more::after{content:" +"}
+.cs[open] .cs-more::after{content:" \2212"}
+.cs-body{padding:0 clamp(20px,3vw,30px) 30px;border-top:1px dashed var(--edge);margin-top:2px;padding-top:22px}
+.cs-body h4{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);margin:22px 0 9px;font-weight:400;
+}
+.cs-body h4:first-child{margin-top:0}
+.cs-body p{color:var(--soft);font-size:15.5px;line-height:1.65;margin:0 0 11px;max-width:74ch}
+.cs-body ul{margin:4px 0 12px;padding-left:18px;color:var(--soft);font-size:15.5px}
+.cs-body li{margin-bottom:7px;line-height:1.6}
+.cs-body li::marker{color:var(--amber-dim)}
+.cs-body b{color:var(--ink)}
+.cs-call{
+  border-left:2px solid var(--sky);padding:12px 0 12px 16px;margin:16px 0;
+  color:var(--soft);font-size:15.5px;line-height:1.62;max-width:74ch;
+}
+.cs-call b{color:var(--sky);font-weight:600}
+.cs-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.cs-tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dim);border:1px solid var(--edge);padding:5px 10px;border-radius:2px;
+}
+@media(max-width:620px){
+  .cs>summary{grid-template-columns:1fr}
+  .cs-more{padding-top:0}
+}
+
 </style>
 </head>
 <body>
@@ -963,6 +1020,7 @@ img{max-width:100%}
         <dd><b>GDS</b><span class="sep">/</span><b>NDC</b><span class="sep">/</span>Sabre<span class="sep">/</span>Amadeus<span class="sep">/</span>Verteil<span class="sep">/</span>PKfare<span class="sep">/</span>TBO<span class="sep">/</span>Stuba<span class="sep">/</span>GRN Connect<span class="sep">/</span>Mid-office systems</dd>
       </div>
     </dl>
+  </section>
 
   <hr class="rule">
 
@@ -1017,6 +1075,207 @@ img{max-width:100%}
       </article>
     </div>
   </section>
+
+  <hr class="rule">
+
+  <!-- 03b --------------------------------------------------------- -->
+  <section class="shell" id="casestudies">
+    <div class="head rv">
+      <div class="tag"><span class="n">04</span><span class="mono">Case studies</span></div>
+      <h2>Three problems, and what I actually decided.</h2>
+      <p class="lede">Screens show you can draw. These show the reasoning &mdash; including the
+      tradeoffs I got wrong first. Open one.</p>
+    </div>
+
+    <div class="cs-list rv d1">
+
+      <details class="cs">
+        <summary>
+          <div>
+            <span class="cs-k">B2B travel SaaS &middot; Product Owner &amp; UX</span>
+            <div class="cs-t">One booking flow, seven suppliers</div>
+            <p class="cs-d">Designing a multi&#8209;supplier search, book and refund journey for
+            OptimusX &mdash; including what happens when a supplier fails.</p>
+          </div>
+          <span class="cs-more">Read</span>
+        </summary>
+        <div class="cs-body">
+          <h4>The problem</h4>
+          <p>Every supplier behaves differently. Sabre, Amadeus, Verteil, PKfare, TBO, Stuba and
+          GRN Connect each return different fare structures, baggage rules, cancellation windows
+          and error responses. The naive design shows the user whatever each supplier sends back
+          &mdash; which produces a screen where two identical&#8209;looking fares behave completely
+          differently once booked.</p>
+          <p>The harder problem is failure. In a multi&#8209;supplier search, one supplier timing
+          out is normal, not exceptional. Most booking interfaces are designed for the happy path
+          and then bolt on an error state. Here <b>the error state is the everyday state</b>.</p>
+
+          <h4>What I did</h4>
+          <ul>
+            <li><b>Read the suppliers, not the competitors.</b> I worked through each supplier's
+            API documentation and mapped what they actually return, down to every error code. You
+            cannot design a unified booking flow until you know exactly where the suppliers
+            disagree.</li>
+            <li><b>Mapped the ugly paths.</b> Search, book, cancel, refund and reissue &mdash; plus
+            what happens when a booking half&#8209;succeeds or a refund is permitted by the airline
+            but not by the consolidator.</li>
+            <li><b>Defined one normalised fare object</b> that every supplier maps into, and
+            designed the interface against that rather than against seven schemas. Where a supplier
+            could not supply a field, the interface says so instead of showing a blank.</li>
+            <li><b>Made partial failure a designed state.</b> Results stream in as suppliers
+            respond, and a failed supplier is shown as failed rather than silently dropped.</li>
+            <li><b>Wrote the acceptance criteria myself</b>, so engineers were never guessing what
+            should happen when a supplier returned something unexpected.</li>
+          </ul>
+
+          <h4>The hard decision</h4>
+          <div class="cs-call"><b>Do you show the user which supplier a fare came from?</b><br>
+          Hiding it is cleaner and looks more like a consumer product. But agents need it &mdash;
+          supplier identity changes how they service the booking later and how much they trust the
+          cancellation rule on screen. I surfaced it but demoted it: visible on the fare, not in the
+          primary hierarchy. The interface is slightly busier than it could be. That cost buys the
+          user the one piece of information they actually act on.</div>
+
+          <h4>Outcome</h4>
+          <ul>
+            <li>A single booking journey across seven suppliers with one consistent interface</li>
+            <li>Failure states designed rather than patched, so an agent can always tell why a
+            result is missing</li>
+            <li>An end&#8209;to&#8209;end proof of concept for cab and ground transport supplier
+            integration, from workflow definition through API validation to the specification the
+            team built from</li>
+          </ul>
+
+          <h4>What I'd do differently</h4>
+          <p>I mapped the suppliers before I talked to enough agents. The supplier research was
+          correct, but I learned the servicing workflow &mdash; what an agent does <i>after</i> a
+          booking goes wrong &mdash; later than I should have. Next time those conversations run in
+          parallel, not in sequence.</p>
+
+          <div class="cs-tags">
+            <span class="cs-tag">UX Research</span><span class="cs-tag">User Flows</span>
+            <span class="cs-tag">Design Systems</span><span class="cs-tag">Product Ownership</span>
+            <span class="cs-tag">GDS &amp; NDC</span><span class="cs-tag">Figma</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="cs">
+        <summary>
+          <div>
+            <span class="cs-k">SaaS analytics &middot; UX Designer</span>
+            <div class="cs-t">Finding where users quit</div>
+            <p class="cs-d">An end&#8209;to&#8209;end UX revamp of Astro Advanced Analytics, driven
+            by user interviews, usability testing and funnel data.</p>
+          </div>
+          <span class="cs-more">Read</span>
+        </summary>
+        <div class="cs-body">
+          <h4>The problem</h4>
+          <p>Users were signing up and not arriving. The product worked, but people were dropping
+          out between creating an account and getting their first useful number on screen &mdash;
+          the point where an analytics tool either proves itself or gets abandoned.</p>
+          <p><b>"Users are dropping off" is not a design brief.</b> The job was to find out where,
+          and why, before touching a single screen.</p>
+
+          <h4>What I did</h4>
+          <ul>
+            <li><b>Went to the data first.</b> Google Analytics and Hotjar to locate the actual
+            drop&#8209;off points in the activation funnel. Analytics told me where people left;
+            session recordings started to suggest why.</li>
+            <li><b>Then went to the people.</b> User interviews with actual Amazon resellers. The
+            data gives you the location; only the user gives you the reason.</li>
+            <li><b>Prioritised by loss, not by ugliness.</b> There is always a long list of things
+            a designer wants to fix. I ranked fixes by how much measurable drop&#8209;off sat behind
+            them.</li>
+            <li><b>Tested before build, not after.</b> Usability testing on prototypes &mdash; the
+            step teams skip when they are in a hurry, and the step that stops you building the
+            wrong thing carefully. It cut rework during development.</li>
+            <li><b>Shipped with engineering</b>, including Chrome extension enhancements, so the
+            experience held together across the web app and the extension.</li>
+          </ul>
+
+          <h4>The principle underneath</h4>
+          <div class="cs-call"><b>Analytics tells you where. Only people tell you why.</b><br>
+          A funnel chart will happily point at a screen and let you redesign it beautifully for the
+          wrong reason. Every drop&#8209;off point I acted on had a human explanation behind it
+          before I touched the design.</div>
+
+          <h4>Outcome</h4>
+          <ul>
+            <li>Drop&#8209;off points identified and addressed with evidence rather than opinion</li>
+            <li>Rework during development reduced by validating designs before build</li>
+            <li>Features and Chrome extension improvements shipped with engineering</li>
+          </ul>
+
+          <div class="cs-tags">
+            <span class="cs-tag">User Research</span><span class="cs-tag">Usability Testing</span>
+            <span class="cs-tag">Funnel Analysis</span><span class="cs-tag">Google Analytics</span>
+            <span class="cs-tag">Hotjar</span><span class="cs-tag">UI Design</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="cs">
+        <summary>
+          <div>
+            <span class="cs-k">Enterprise tooling &middot; UX</span>
+            <div class="cs-t">Making contracts legible</div>
+            <p class="cs-d">A tracking solution that turns dense supplier contracts into something a
+            team can actually monitor and act on.</p>
+          </div>
+          <span class="cs-more">Read</span>
+        </summary>
+        <div class="cs-body">
+          <h4>The problem</h4>
+          <p>Supplier contracts carry obligations with dates attached: rate validity, renewal
+          windows, minimum volume commitments, penalty clauses. The information exists, but it lives
+          in PDFs and inboxes &mdash; <b>technically available and practically invisible</b>. People
+          miss renewal dates not because they are careless, but because nothing surfaces them.</p>
+          <p>So the design problem was never "display contracts." It was: <b>what does this person
+          need to notice today?</b></p>
+
+          <h4>What I did</h4>
+          <ul>
+            <li><b>Separated reading from monitoring.</b> A contract has two completely different
+            uses &mdash; reading it in full (rare, deep) and checking its status (constant,
+            shallow). One screen designed for both is bad at both. I split them.</li>
+            <li><b>Organised around dates, not documents.</b> The structuring principle became time
+            &mdash; what expires soon, what needs action, what is dormant &mdash; rather than an
+            alphabetical list of agreements.</li>
+            <li><b>Built the hierarchy around exceptions.</b> In a healthy system most contracts
+            need nothing. Showing all of them equally buries the three that matter. The default view
+            answers "what needs me?" before it answers "what exists?"</li>
+          </ul>
+
+          <h4>The tradeoff</h4>
+          <div class="cs-call"><b>How much contract detail belongs on the summary view?</b><br>
+          Too little and users open every record anyway, which defeats the point. Too much and the
+          exceptions stop standing out, which also defeats the point. The summary carries only what
+          a person needs to decide whether to open the record &mdash; everything else waits.</div>
+
+          <h4>Outcome</h4>
+          <ul>
+            <li>Obligations and deadlines visible by default instead of buried in documents</li>
+            <li>A monitoring view that surfaces exceptions rather than listing everything
+            equally</li>
+          </ul>
+
+          <div class="cs-tags">
+            <span class="cs-tag">Information Architecture</span><span class="cs-tag">Dashboard UX</span>
+            <span class="cs-tag">Enterprise</span><span class="cs-tag">Prototyping</span>
+          </div>
+        </div>
+      </details>
+
+    </div>
+
+    <p class="cs-d rv d2" style="margin-top:22px">
+      More visual work, including the screens behind these, lives on
+      <a class="verify" href="https://www.behance.net/sarranshagrawal" target="_blank" rel="noopener">Behance &#8599;</a>
+    </p>
+  </section>
+
 
   <hr class="rule">
 
@@ -1283,7 +1542,7 @@ img{max-width:100%}
 
       <div class="cta">
         <button class="btn primary" type="button" data-hire>Hire me <span class="arw">&rarr;</span></button>
-        <a class="btn" href="https://www.linkedin.com/in/sarransh-agrawal-64a66b19a/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://www.linkedin.com/in/sarranshagrawal/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
 
@@ -1324,7 +1583,7 @@ img{max-width:100%}
         <span class="grow"><span class="t">WhatsApp</span><span class="d">fastest reply</span></span>
       </a>
 
-      <a class="way" href="https://www.linkedin.com/in/sarransh-agrawal-64a66b19a/" target="_blank" rel="noopener">
+      <a class="way" href="https://www.linkedin.com/in/sarranshagrawal/" target="_blank" rel="noopener">
         <span class="ico">IN</span>
         <span class="grow"><span class="t">Connect on LinkedIn</span><span class="d">linkedin.com/in/sarransh-agrawal</span></span>
       </a>
