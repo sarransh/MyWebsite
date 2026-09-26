@@ -849,6 +849,23 @@ img{max-width:100%}
   .cs-links{margin-top:26px;font-size:15.5px}
   .cs-links a{color:var(--sky);text-decoration:none;border-bottom:1px solid transparent}
   .cs-links a:hover{border-bottom-color:currentColor}
+
+  /* project card preview mockup */
+  .cs.shot>summary{grid-template-columns:270px minmax(0,1fr) auto}
+  .cs-shot{position:relative;width:270px;aspect-ratio:16/11;border-radius:10px;overflow:hidden;
+    background:radial-gradient(130% 130% at 18% 8%,#16324A 0%,#0E1E2E 48%,#0A131D 100%);
+    border:1px solid var(--edge)}
+  .cs-shot::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(90% 70% at 72% 28%,rgba(94,200,229,.14),transparent 62%)}
+  .cs-shot .l{position:absolute;border-radius:4px;overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);box-shadow:0 10px 22px -8px rgba(0,0,0,.85)}
+  .cs-shot .l img{display:block;width:100%}
+  .cs-shot .a{left:26%;top:12%;width:70%}
+  .cs-shot .b{left:4%;top:30%;width:22%;aspect-ratio:9/17}
+  @media(max-width:860px){
+    .cs.shot>summary{grid-template-columns:minmax(0,1fr) auto}
+    .cs-shot{display:none}
+  }
 </style>
 </head>
 <body>
@@ -1164,8 +1181,12 @@ img{max-width:100%}
         </div>
       </details>
 
-      <details class="cs">
+      <details class="cs shot">
         <summary>
+          <div class="cs-shot">
+            <span class="l a"><img src="work/img/astro/product-table.png" alt="" loading="lazy"></span>
+            <span class="l b"><img src="work/img/astro/extension-panel.png" alt="" loading="lazy"></span>
+          </div>
           <div>
             <span class="cs-k">B2B SaaS &middot; UX Designer, end to end</span>
             <div class="cs-t">Replacing a spreadsheet nobody wanted to give up</div>
