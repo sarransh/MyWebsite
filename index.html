@@ -866,6 +866,19 @@ img{max-width:100%}
     .cs.shot>summary{grid-template-columns:minmax(0,1fr) auto}
     .cs-shot{display:none}
   }
+
+  /* clickable project card -> dedicated case study page */
+  .card.linked{position:relative}
+  .card.linked:hover{box-shadow:inset 0 0 0 1px var(--sky)}
+  .card.linked .cover{position:absolute;inset:0;z-index:2;text-indent:-9999px;overflow:hidden}
+  .card .go{margin-top:auto;padding-top:10px;font-family:var(--mono);font-size:10.5px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--sky)}
+  .card.linked:hover .go{color:var(--ink,#fff)}
+  /* prominent open-the-page button at the top of an expanded case study */
+  .cs-open{display:inline-flex;align-items:center;gap:9px;margin-bottom:24px;padding:13px 22px;
+    border-radius:999px;background:var(--sky);color:#04131B;font-family:var(--mono);font-size:11px;
+    letter-spacing:.13em;text-transform:uppercase;text-decoration:none;font-weight:700}
+  .cs-open:hover{filter:brightness(1.12)}
 </style>
 </head>
 <body>
@@ -919,6 +932,7 @@ img{max-width:100%}
     <div class="cta">
       <button class="btn primary" type="button" data-hire>Hire me <span class="arw">&rarr;</span></button>
       <a class="btn" href="#work">See the work</a>
+      <a class="btn" href="/work/astro-advanced-analytics">Latest case study <span class="arw">&rarr;</span></a>
     </div>
   </header>
 
@@ -1067,11 +1081,13 @@ img{max-width:100%}
         <div class="own">Role &middot; <b>Product &amp; UX owner</b></div>
       </article>
 
-      <article class="card">
+      <article class="card linked">
+        <a class="cover" href="/work/astro-advanced-analytics">Astro Advanced Analytics case study</a>
         <div class="sector"><span class="mono amber">Analytics</span><span class="mono">SaaS</span></div>
         <h3>Astro Advanced Analytics</h3>
         <p>End&#8209;to&#8209;end UX revamp. Interviews and testing first, then funnel data to decide what to fix.</p>
         <div class="own">Role &middot; <b>UX Designer</b></div>
+        <div class="go">Read the case study &rarr;</div>
       </article>
 
       <article class="card">
@@ -1196,6 +1212,7 @@ img{max-width:100%}
           <span class="cs-more">Read</span>
         </summary>
         <div class="cs-body">
+          <a class="cs-open" href="/work/astro-advanced-analytics">Open the full case study &rarr;</a>
           <h4>The problem</h4>
           <p>An Amazon reseller's job is one question repeated a few thousand times a week:
           <b>if I buy this product at this price, will I make money?</b></p>
