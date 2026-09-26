@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Astro Advanced Analytics — End-to-End UX Case Study | Sarransh Agrawal</title>
+<meta name="description" content="How I designed Astro Advanced Analytics — a sourcing platform for Amazon resellers, across a web app and a Chrome extension. Problem framing, IA, user flows, design system and the tradeoffs I made.">
+<link rel="canonical" href="https://sarranshagrawal.netlify.app/work/astro-advanced-analytics.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Sarransh Agrawal">
+<meta property="og:title" content="Astro Advanced Analytics — End-to-End UX Case Study">
+<meta property="og:description" content="A sourcing platform for Amazon resellers, designed across a web app and a Chrome extension.">
+<meta property="og:url" content="https://sarranshagrawal.netlify.app/work/astro-advanced-analytics.html">
+<meta property="og:image" content="https://sarranshagrawal.netlify.app/work/img/astro/product-table.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sarranshagrawal.netlify.app/work/img/astro/product-table.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#080B10; --ink2:#111720; --line:#1E2733;
+  --d1:#F2F5F9; --d2:#9EABBC; --d3:#5E6C7E;
+  --blue:#4269E2; --green:#22C55E; --amber:#FFAB00;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  --pad:clamp(20px,5vw,72px);
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--d1);font-family:Manrope,'Segoe UI',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.6}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 var(--pad)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(8,11,16,.82);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+.nav a.home{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--d2);text-decoration:none}
+.nav a.home:hover{color:var(--d1)}
+.nav .who{font-family:var(--mono);font-size:12.5px;letter-spacing:.12em;color:var(--d3);text-transform:uppercase}
+
+/* hero */
+.hero{padding:clamp(56px,9vw,120px) 0 clamp(40px,6vw,72px)}
+.eyebrow{display:inline-flex;align-items:center;gap:11px;font-family:var(--mono);font-size:12.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--d3)}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--green)}
+h1{font-size:clamp(38px,6.6vw,74px);line-height:1.04;letter-spacing:-.04em;font-weight:800;margin-top:22px}
+.sub{font-size:clamp(17px,2.2vw,23px);color:var(--d2);margin-top:22px;max-width:52ch}
+.metarow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px;
+  margin-top:clamp(36px,5vw,60px);padding-top:32px;border-top:1px solid var(--line)}
+.metarow .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--d3)}
+.metarow .v{font-size:17px;font-weight:700;margin-top:8px;line-height:1.4}
+.links{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.links a{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--line);padding:12px 20px;border-radius:999px;color:var(--d2)}
+.links a:hover{border-color:var(--green);color:var(--green)}
+.links a.p{background:var(--green);border-color:var(--green);color:#06120B;font-weight:500}
+
+/* sections */
+section.s{padding:clamp(48px,7vw,96px) 0;border-top:1px solid var(--line)}
+.snum{font-family:var(--mono);font-size:12.5px;letter-spacing:.2em;color:var(--d3);text-transform:uppercase}
+h2{font-size:clamp(28px,4.4vw,48px);line-height:1.12;letter-spacing:-.03em;font-weight:800;margin-top:16px;max-width:20ch}
+h3{font-size:clamp(20px,2.6vw,27px);line-height:1.25;letter-spacing:-.02em;font-weight:700;margin-top:44px}
+p{font-size:clamp(16px,1.9vw,19px);color:var(--d2);margin-top:20px;max-width:66ch}
+p b,li b{color:var(--d1);font-weight:700}
+p i{color:var(--d1);font-style:italic}
+mark{background:var(--green);color:#06120B;padding:.02em .22em;border-radius:6px;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+ul{margin-top:24px;max-width:66ch;list-style:none;display:grid;gap:16px}
+li{font-size:clamp(16px,1.9vw,19px);color:var(--d2);padding-left:26px;position:relative}
+li::before{content:"";position:absolute;left:0;top:11px;width:9px;height:9px;border-radius:50%;background:var(--green)}
+
+.fig{margin-top:38px}
+.fig img{border-radius:12px;border:1px solid var(--line)}
+.fig figcaption{font-family:var(--mono);font-size:12.5px;letter-spacing:.05em;color:var(--d3);margin-top:14px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+
+.pull{border-left:4px solid var(--amber);padding-left:26px;margin-top:38px;max-width:60ch}
+.pull .l{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber)}
+.pull p{margin-top:12px;font-size:clamp(18px,2.4vw,24px);color:var(--d1);font-weight:600;line-height:1.4}
+.pull.g{border-color:var(--green)} .pull.g .l{color:var(--green)}
+.pull.b{border-color:var(--blue)} .pull.b .l{color:#7C97ED}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:34px}
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:26px 24px}
+.card .k{font-family:var(--mono);font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:var(--d3)}
+.card .t{font-size:19px;font-weight:700;margin-top:10px;letter-spacing:-.01em}
+.card p{font-size:15.5px;margin-top:10px}
+
+.pal{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:34px}
+.sw{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--ink2)}
+.sw .c{height:84px}
+.sw .b{padding:16px 18px 20px}
+.sw .hx{font-family:var(--mono);font-size:12px;color:var(--d3)}
+.sw .nm{font-size:16px;font-weight:700;margin-top:5px}
+.sw .wy{font-size:14px;color:var(--d2);margin-top:7px;line-height:1.45}
+
+.ts{margin-top:28px;max-width:60ch}
+.ts div{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-bottom:1px solid var(--line)}
+.ts span{font-family:var(--mono);font-size:13.5px;color:var(--d3)}
+.ts b{font-size:15px;font-weight:700;white-space:nowrap}
+
+.tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:38px}
+.tags span{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--d2);border:1px solid var(--line);padding:9px 15px;border-radius:999px}
+
+
+/* layered hero mockup */
+.stage{position:relative;margin-top:clamp(40px,6vw,72px);border-radius:clamp(14px,2vw,22px);
+  overflow:hidden;background:
+    radial-gradient(120% 120% at 15% 10%, #16324A 0%, #0E1E2E 45%, #0A131D 100%);
+  aspect-ratio:16/10;border:1px solid var(--line)}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(90% 70% at 70% 30%, rgba(34,197,94,.10), transparent 60%)}
+.stage .l{position:absolute;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 30px 70px -18px rgba(0,0,0,.75)}
+.stage .l img{display:block;width:100%}
+.l-back {left:33%; top:7%;  width:64%;}
+.l-mid  {left:13%; top:36%; width:58%;}
+.l-front{left:2.5%;top:15%; width:17%; aspect-ratio:9/19; overflow:hidden;}
+.l-front img{width:100%}
+.stage .cap{position:absolute;left:3.5%;top:5%;font-family:var(--mono);font-size:clamp(9px,1.1vw,13px);
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.42);z-index:3}
+@media(max-width:640px){
+  .stage{aspect-ratio:4/3}
+  .l-back{left:30%;top:8%;width:68%}
+  .l-mid{left:10%;top:40%;width:62%}
+  .l-front{left:2%;top:18%;width:22%}
+}
+footer{border-top:1px solid var(--line);padding:clamp(48px,7vw,88px) 0 60px;text-align:center}
+footer h2{margin:0 auto;max-width:18ch}
+footer .links{justify-content:center}
+footer .fine{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--d3);margin-top:44px}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="home" href="../index.html">&larr; All work</a>
+  <span class="who">Sarransh Agrawal</span>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <div class="eyebrow"><i></i>B2B SaaS &middot; End-to-end UX</div>
+  <h1>Replacing a spreadsheet nobody wanted to give up</h1>
+  <p class="sub">Astro Advanced Analytics &mdash; a sourcing platform for Amazon resellers,
+    designed across a web app and a Chrome extension.</p>
+
+  <div class="metarow">
+    <div><div class="k">Role</div><div class="v">UX Designer, end to end</div></div>
+    <div><div class="k">Surfaces</div><div class="v">Web app &middot; Chrome extension</div></div>
+    <div><div class="k">Users</div><div class="v">Amazon resellers</div></div>
+    <div><div class="k">Tools</div><div class="v">Figma &middot; GA &middot; Hotjar</div></div>
+  </div>
+
+  <div class="links">
+    <a class="p" href="https://www.astroadvancedanalytics.com/" target="_blank" rel="noopener">Live product &#8599;</a>
+    <a href="https://chromewebstore.google.com/detail/astro-advanced-analytics/pmbdkgeeikkigddegjljelfeakhmknpe" target="_blank" rel="noopener">Chrome extension &#8599;</a>
+    <a href="https://www.behance.net/sarranshagrawal" target="_blank" rel="noopener">Behance &#8599;</a>
+  </div>
+
+  <div class="stage">
+    <span class="cap">Web app &middot; Chrome extension</span>
+    <div class="l l-back"><img src="img/astro/product-table.png" alt="The Astro product analysis table" fetchpriority="high"></div>
+    <div class="l l-mid"><img src="img/astro/shortlist.png" alt="Shortlist with live order totals" fetchpriority="high"></div>
+    <div class="l l-front"><img src="img/astro/extension-panel.png" alt="Astro Chrome extension panel"></div>
+  </div>
+</div></header>
+
+<section class="s"><div class="wrap">
+  <div class="snum">01 &mdash; The problem</div>
+  <h2>A reseller&rsquo;s whole job is <mark>one question</mark>, repeated a few thousand times a week.</h2>
+  <p style="font-size:clamp(18px,2.4vw,24px);color:var(--d1);font-weight:600">If I buy this product
+    at this price, will I make money?</p>
+  <p>Answering it once means the supplier&rsquo;s price list, the Amazon listing, an eligibility
+    check, a fee estimate, a sales&#8209;rate guess, and a look at whether Amazon itself is
+    competing. <b>Six tabs and a spreadsheet, per product.</b></p>
+  <p>So sellers batch it. They check the twenty products that look promising and ignore the rest of
+    the list &mdash; which means the decision gets made by whatever sorts to the top of a
+    spreadsheet, not by what is actually profitable.</p>
+  <div class="pull"><div class="l">The real brief</div>
+    <p>Not &ldquo;build an analytics tool&rdquo;. Compress a six&#8209;tab research task into
+      something a seller can run across an entire supplier list.</p></div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">02 &mdash; Process</div>
+  <h2>Where, then why.</h2>
+  <p>Two questions that constantly get confused. Analytics answers the first. Only people answer
+    the second.</p>
+  <div class="cards">
+    <div class="card"><div class="k">Step 01</div><div class="t">Funnel &amp; behaviour data</div>
+      <p>Google Analytics and Hotjar to find which steps lost people and which screens they scrolled
+      past. That narrowed where to look &mdash; it never said what to change.</p></div>
+    <div class="card"><div class="k">Step 02</div><div class="t">User interviews with sellers</div>
+      <p>On the steps the data flagged. Watching someone source a product with their own spreadsheet
+      open shows which columns they read and which they scroll past.</p></div>
+    <div class="card"><div class="k">Step 03</div><div class="t">Usability testing before build</div>
+      <p>Clickable prototypes tested against the questions research raised, so disagreements were
+      settled by watching someone use it rather than by opinion.</p></div>
+  </div>
+  <div class="pull b"><div class="l">What it changed</div>
+    <p>Sellers don&rsquo;t trust a number they can&rsquo;t take apart. They work in lists, not single
+      products. And the moment of highest anxiety isn&rsquo;t analysis &mdash; it&rsquo;s connecting
+      their Amazon account.</p></div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">03 &mdash; Information architecture</div>
+  <h2>The nav <mark>is</mark> the workflow.</h2>
+  <p>One decision shaped the whole structure: a seller should never have to translate between
+    &ldquo;where am I in the process&rdquo; and &ldquo;where am I in the app&rdquo;. The five
+    workflow steps &mdash; connect, scan, analyse, shortlist, generate PO &mdash; are the five
+    nav items.</p>
+  <p>Each step also leaves behind an object you can return to: a scan, a shortlist, a purchase
+    order. Sourcing is not a session. It takes days, and it gets interrupted.</p>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">04 &mdash; Activation</div>
+  <h2>The hardest screen in the product.</h2>
+  <p>Step one asks a stranger to connect their Amazon Seller Central account &mdash; before the
+    product has proved anything. Refusing is rational, so the screen answers the three objections in
+    the order they arrive.</p>
+  <figure class="fig"><img src="img/astro/connect-spapi.png" alt="Connect SP API step" loading="lazy">
+    <figcaption>Reward, reassurance and an exit &mdash; in the order the objections arrive.</figcaption></figure>
+  <ul>
+    <li><b>The reward is in the headline</b>, not a tooltip &mdash; connect and get 5,000 free scans.</li>
+    <li><b>The reassurance sits at the click</b>: read&#8209;only, we never modify your Amazon data.
+      Not buried in a policy page.</li>
+    <li><b>The escape hatch is visible</b> &mdash; skip, with a lower limit. A seller who skips still
+      reaches the product. A seller who feels cornered leaves.</li>
+  </ul>
+  <h3>The dead end that isn&rsquo;t one</h3>
+  <p>Some visitors have no Amazon seller account at all. The obvious handling is an error state.
+    Instead that link leads somewhere: a bootcamp and a mentorship programme. A person who cannot
+    use the product today becomes a seller later.</p>
+  <div class="fig two">
+    <img src="img/astro/signup.png" alt="Sign up" loading="lazy">
+    <img src="img/astro/no-amazon.png" alt="Bootcamp and mentorship path" loading="lazy">
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">05 &mdash; Onboarding</div>
+  <h2>Two versions of Getting Started.</h2>
+  <p>First time through, a seller is learning a <b>sequence</b>, so the stepper is the teaching.
+    Every screen is one step with the other four visible above it.</p>
+  <p>The second time, that stepper is in the way. They have a new supplier list and want it scanned.
+    Five screens to reach an upload box is a tax on the users you most want back. So there are two
+    flows: a <b>guided multi&#8209;step journey for new users</b> and a <b>single&#8209;page version
+    for returning ones</b>.</p>
+  <div class="pull"><div class="l">The cost I accepted</div>
+    <p>Two flows to design, test and maintain instead of one. Worth it, because the alternative
+      punishes the behaviour the product depends on: coming back.</p></div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">06 &mdash; Getting data in</div>
+  <h2>Every supplier list is shaped differently.</h2>
+  <p>Different column names, different order, half of them with a logo in the first three rows.
+    This is the step where an import flow usually dies.</p>
+  <div class="fig two">
+    <img src="img/astro/upload.png" alt="Upload supplier list" loading="lazy">
+    <img src="img/astro/column-mapping.png" alt="Column mapping against a real file preview" loading="lazy">
+  </div>
+  <ul>
+    <li>The file is shown as a <b>real preview &mdash; actual rows</b>, not field names. You map your
+      columns against your own data.</li>
+    <li><b>Only two fields are required:</b> identifier and price. Everything else is optional and
+      marked as such.</li>
+    <li>Every field you mark required is a reason to abandon the import. The product computes a great
+      deal from very little, so it should <b>ask for very little</b>.</li>
+  </ul>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">07 &mdash; Triage</div>
+  <h2>Which list is worth opening?</h2>
+  <p>After a few weeks a seller has many scanned lists. Name, size and date tell you nothing. So each
+    list carries its <mark>score distribution</mark> instead &mdash; a stacked bar of how many
+    products scored 1 to 5, red through green.</p>
+  <figure class="fig"><img src="img/astro/scan-list.png" alt="Scan list with score distribution" loading="lazy">
+    <figcaption>You can see one supplier has 76 excellent products and another has almost none &mdash; without opening either.</figcaption></figure>
+  <p>Each list also carries its state in the workflow: <i>Scanned &rarr; Analyzed &rarr; Shortlisted
+    &rarr; PO Created.</i> The process lives on the object, not in the user&rsquo;s memory.</p>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">08 &mdash; The core screen</div>
+  <h2>Where the product lives or dies.</h2>
+  <p>This is where a seller spends the day, and it is unapologetically dense. Consumer instinct says
+    reduce, hide, progressively disclose. Applied here it is wrong &mdash; a seller compares hundreds
+    of rows, and anything behind a click is a click multiplied by three hundred.
+    <b>For this user, density is speed.</b></p>
+  <figure class="fig"><img src="img/astro/product-table.png" alt="Product analysis table" loading="lazy">
+    <figcaption>Product overview &middot; Risk &amp; eligibility &middot; Profit calculator &middot; Market stability &middot; Actions.</figcaption></figure>
+  <h3>Four questions, left to right</h3>
+  <div class="cards">
+    <div class="card"><div class="k">Group 01</div><div class="t">What is it?</div>
+      <p>Image, title, ASIN, score badge.</p></div>
+    <div class="card"><div class="k">Group 02</div><div class="t">Can I sell it?</div>
+      <p>Restricted, hazmat, meltable, approval needed.</p></div>
+    <div class="card"><div class="k">Group 03</div><div class="t">Will I make money?</div>
+      <p>Cost, fees, profit, margin, ROI.</p></div>
+    <div class="card"><div class="k">Group 04</div><div class="t">Will it keep selling?</div>
+      <p>Amazon in stock, break even, BSR.</p></div>
+  </div>
+  <ul style="margin-top:32px">
+    <li><b>Colour is the first pass.</b> A seller scans the colour, not the text, and only reads the
+      rows that survive.</li>
+    <li><b>Cost is editable in the row.</b> Supplier prices get negotiated &mdash; change it and
+      profit, margin and ROI recalculate where you are looking. No modal, no losing your place.</li>
+    <li><b>The sidebar collapses to icons here and nowhere else.</b> Horizontal space is the scarce
+      resource on this screen, so the chrome gives way to the data.</li>
+  </ul>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">09 &mdash; Decision</div>
+  <h2>Nobody buys one product.</h2>
+  <p>Up to here every number is per product. But a seller places an <mark>order</mark>, and the order
+    has a budget. So the Shortlist adds a running total bar &mdash; set quantities per row and the
+    whole order recalculates live above them.</p>
+  <figure class="fig"><img src="img/astro/shortlist.png" alt="Shortlist with live order totals" loading="lazy">
+    <figcaption>The interface changes the unit of the decision from the product to the order.</figcaption></figure>
+  <figure class="fig"><img src="img/astro/purchase-order.png" alt="Generated purchase order" loading="lazy">
+    <figcaption>One button later: the same data, re&#8209;cut for a different reader &mdash; the supplier, not the seller.</figcaption></figure>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">10 &mdash; Second surface</div>
+  <h2>The same product, <mark>400px</mark> wide.</h2>
+  <p>A lot of sourcing happens while browsing. The extension puts the analysis on the page the seller
+    is already looking at &mdash; including sites that have no ASIN at all, which is where products
+    nobody else has found still exist.</p>
+  <figure class="fig"><img src="img/astro/extension-context.png" alt="Extension docked on a live product page" loading="lazy">
+    <figcaption>Docked over a live product page, on a non&#8209;Amazon site.</figcaption></figure>
+  <ul>
+    <li><b>The verdict leads.</b> &ldquo;Can Sell&rdquo; sits in the header before any number. In a
+      narrow panel the first line has to be the answer, not the evidence.</li>
+    <li><b>Jump&#8209;to chips</b> give the panel its own navigation. Scrolling to find a section is
+      not viable in a sidebar this tall.</li>
+    <li><b>The seller controls the intrusion.</b> Layout toggles set how much of the page the panel
+      covers. It is a guest on someone else&rsquo;s site.</li>
+  </ul>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">11 &mdash; Home</div>
+  <h2>A dashboard with three jobs and no others.</h2>
+  <ul>
+    <li><b>Finish activating.</b> If the Amazon account is still not connected, the banner is the
+      first thing on the page and the locked tile shows exactly what is being withheld.</li>
+    <li><b>Start work immediately.</b> The upload box is on the dashboard itself. The most common
+      action on the home screen should be the home screen.</li>
+    <li><b>Resume work.</b> Recent scans, shortlists and purchase orders &mdash; the three objects of
+      the workflow, in workflow order.</li>
+  </ul>
+  <div class="pull b"><div class="l">One metric is different</div>
+    <p>&ldquo;Est. Hours Saved&rdquo; is not operational. It is the product&rsquo;s whole argument,
+      in the unit the seller complained about.</p></div>
+  <figure class="fig"><img src="img/astro/dashboard.png" alt="Dashboard" loading="lazy"></figure>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">12 &mdash; Design system</div>
+  <h2>Colour is the first read, not decoration.</h2>
+  <p>Every colour maps to a decision the seller makes. Nothing was chosen because it looked good next
+    to the logo.</p>
+  <div class="pal">
+    <div class="sw"><div class="c" style="background:#4269E2"></div><div class="b"><div class="hx">#4269E2</div><div class="nm">Primary</div><div class="wy">Actions and active state only. Never data.</div></div></div>
+    <div class="sw"><div class="c" style="background:#22C55E"></div><div class="b"><div class="hx">#22C55E</div><div class="nm">Success</div><div class="wy">Eligible, profitable, in stock.</div></div></div>
+    <div class="sw"><div class="c" style="background:#FFAB00"></div><div class="b"><div class="hx">#FFAB00</div><div class="nm">Warning</div><div class="wy">Borderline &mdash; a row that needs a human.</div></div></div>
+    <div class="sw"><div class="c" style="background:#B71D18"></div><div class="b"><div class="hx">#B71D18</div><div class="nm">Error</div><div class="wy">Restricted, hazmat, loss. Used sparingly.</div></div></div>
+    <div class="sw"><div class="c" style="background:#00B8D9"></div><div class="b"><div class="hx">#00B8D9</div><div class="nm">Info</div><div class="wy">Neutral data, outside the traffic&#8209;light set.</div></div></div>
+    <div class="sw"><div class="c" style="background:#1C252E"></div><div class="b"><div class="hx">#1C252E</div><div class="nm">Text primary</div><div class="wy">Near&#8209;black &mdash; tables are read for hours.</div></div></div>
+    <div class="sw"><div class="c" style="background:#637381"></div><div class="b"><div class="hx">#637381</div><div class="nm">Text secondary</div><div class="wy">Labels and units stay quieter than values.</div></div></div>
+    <div class="sw"><div class="c" style="background:#919EAB"></div><div class="b"><div class="hx">#919EAB</div><div class="nm">Grey / disabled</div><div class="wy">Locked, and the base for every tint.</div></div></div>
+  </div>
+  <div class="pull g"><div class="l">The rule that holds it together</div>
+    <p>Blue is interaction. Green&#8209;amber&#8209;red is judgement. They never swap &mdash; so the
+      traffic light learned on the product table reads the same in the extension, the scan list and
+      the shortlist.</p></div>
+
+  <h3>One family, eight sizes</h3>
+  <p>Public Sans throughout, on a deliberately tight scale. A table with fourteen distinct text sizes
+    is a table nobody can scan.</p>
+  <div class="ts">
+    <div><span>H4 &mdash; page titles</span><b>24 / 36 &middot; Bold</b></div>
+    <div><span>H5 &mdash; section titles</span><b>20 / 30 &middot; Bold</b></div>
+    <div><span>H6 &mdash; card titles</span><b>18 / 28 &middot; SemiBold</b></div>
+    <div><span>Subtitle 1</span><b>16 / 24 &middot; SemiBold</b></div>
+    <div><span>Subtitle 2 &mdash; table headers</span><b>14 / 22 &middot; SemiBold</b></div>
+    <div><span>Body 2 &mdash; table cells</span><b>14 / 22 &middot; Regular</b></div>
+    <div><span>Caption &mdash; units and labels</span><b>12 / 18 &middot; Regular</b></div>
+    <div><span>Radius &mdash; control / card</span><b>8px / 16px</b></div>
+  </div>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">13 &mdash; The hard decision</div>
+  <h2>Simplify the table, or keep it dense?</h2>
+  <p>The table is intimidating on first sight. Everyone who reviews it says so, and they are right.
+    The pull to simplify is strong, and here it is the wrong instinct.</p>
+  <p>A simplified table demos better and works worse. The people who find it intimidating see it for
+    thirty seconds. The people who use it see it for hours, and are already fluent in these columns
+    &mdash; they have maintained them by hand in a spreadsheet for years.</p>
+  <p>So I kept the density and paid for it elsewhere: <b>column grouping</b> so the wall reads as four
+    regions, <b>colour</b> so the first pass needs no reading, and <b>a compact view</b> for scanning
+    versus a full view for inspecting. <b>The honest cost is the first ten minutes.</b></p>
+  <figure class="fig"><img src="img/astro/product-table-compact.png" alt="Compact view of the product table" loading="lazy">
+    <figcaption>Compact view &mdash; same table, tuned for scanning rather than inspecting.</figcaption></figure>
+</div></section>
+
+<section class="s"><div class="wrap">
+  <div class="snum">14 &mdash; Reflection</div>
+  <h2>What I&rsquo;d do differently.</h2>
+  <h3>The traffic light is colour&#8209;only</h3>
+  <p>Eligible, restricted and check&#8209;eligibility are separated by green, red and amber and in
+    places by little else. For a colour&#8209;blind seller, the fastest part of this interface is the
+    least usable part of it. Every state should carry a shape or a short label so colour is
+    reinforcement, not the whole signal. This is the change I would make first.</p>
+  <h3>I didn&rsquo;t instrument the table itself</h3>
+  <p>I know where people left the funnel. I do not know which columns they use once they are inside
+    the product table &mdash; which would have settled the density argument with evidence instead of
+    reasoning.</p>
+  <h3>Two onboarding flows is a debt</h3>
+  <p>Splitting new and returning users was right for the user and a real cost for the team. One
+    adaptive screen that collapses as competence grows would serve both and halve the maintenance.</p>
+
+  <div class="tags">
+    <span>End-to-End UX</span><span>Information Architecture</span><span>User Research</span>
+    <span>Design Systems</span><span>Data-Dense UI</span><span>Chrome Extension</span>
+    <span>Usability Testing</span><span>Figma</span>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <h2>Want the rest of the reasoning?</h2>
+  <p style="margin:18px auto 0;max-width:46ch">Happy to walk through the parts that didn&rsquo;t
+    work, too.</p>
+  <div class="links">
+    <a class="p" href="mailto:sarransh12345@gmail.com">Email me</a>
+    <a href="https://www.linkedin.com/in/sarranshagrawal/" target="_blank" rel="noopener">LinkedIn &#8599;</a>
+    <a href="../index.html">All work</a>
+  </div>
+  <div class="fine">SARRANSH AGRAWAL &middot; SENIOR UX DESIGNER &amp; PRODUCT OWNER &middot; PUNE, INDIA</div>
+</div></footer>
+
+</body>
+</html>

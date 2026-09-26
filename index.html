@@ -845,6 +845,10 @@ img{max-width:100%}
   .cs-more{padding-top:0}
 }
 
+
+  .cs-links{margin-top:26px;font-size:15.5px}
+  .cs-links a{color:var(--sky);text-decoration:none;border-bottom:1px solid transparent}
+  .cs-links a:hover{border-bottom-color:currentColor}
 </style>
 </head>
 <body>
@@ -1163,55 +1167,121 @@ img{max-width:100%}
       <details class="cs">
         <summary>
           <div>
-            <span class="cs-k">SaaS analytics &middot; UX Designer</span>
-            <div class="cs-t">Finding where users quit</div>
-            <p class="cs-d">An end&#8209;to&#8209;end UX revamp of Astro Advanced Analytics, driven
-            by user interviews, usability testing and funnel data.</p>
+            <span class="cs-k">B2B SaaS &middot; UX Designer, end to end</span>
+            <div class="cs-t">Replacing a spreadsheet nobody wanted to give up</div>
+            <p class="cs-d">Astro Advanced Analytics &mdash; an end&#8209;to&#8209;end sourcing
+            platform for Amazon resellers, designed across a web app and a Chrome extension.</p>
           </div>
           <span class="cs-more">Read</span>
         </summary>
         <div class="cs-body">
           <h4>The problem</h4>
-          <p>Users were signing up and not arriving. The product worked, but people were dropping
-          out between creating an account and getting their first useful number on screen &mdash;
-          the point where an analytics tool either proves itself or gets abandoned.</p>
-          <p><b>"Users are dropping off" is not a design brief.</b> The job was to find out where,
-          and why, before touching a single screen.</p>
+          <p>An Amazon reseller's job is one question repeated a few thousand times a week:
+          <b>if I buy this product at this price, will I make money?</b></p>
+          <p>Answering it once means opening the supplier's price list, finding the product on
+          Amazon, checking whether you are even allowed to sell it, estimating Amazon's fees,
+          guessing how fast it sells, and checking whether Amazon itself is competing on the
+          listing. Six tabs and a spreadsheet, per product.</p>
+          <p>So sellers batch it. They pick the twenty products that look promising and ignore the
+          rest of the list &mdash; which means <b>the decision is made by whatever sorts to the top
+          of a spreadsheet</b>, not by what is actually profitable.</p>
+          <div class="cs-call"><b>The real design problem was not "build an analytics tool".</b><br>
+          It was compressing a six&#8209;tab research task into something a seller can do across an
+          entire supplier list &mdash; without asking them to abandon a workflow they have trusted
+          for years.</div>
 
-          <h4>What I did</h4>
+          <h4>How I decided what to fix</h4>
+          <p>I separated two questions that usually get confused: <i>where</i> people drop out, and
+          <i>why</i>. Analytics answers the first. Only people answer the second.</p>
           <ul>
-            <li><b>Went to the data first.</b> Google Analytics and Hotjar to locate the actual
-            drop&#8209;off points in the activation funnel. Analytics told me where people left;
-            session recordings started to suggest why.</li>
-            <li><b>Then went to the people.</b> User interviews with actual Amazon resellers. The
-            data gives you the location; only the user gives you the reason.</li>
-            <li><b>Prioritised by loss, not by ugliness.</b> There is always a long list of things
-            a designer wants to fix. I ranked fixes by how much measurable drop&#8209;off sat behind
-            them.</li>
-            <li><b>Tested before build, not after.</b> Usability testing on prototypes &mdash; the
-            step teams skip when they are in a hurry, and the step that stops you building the
-            wrong thing carefully. It cut rework during development.</li>
-            <li><b>Shipped with engineering</b>, including Chrome extension enhancements, so the
-            experience held together across the web app and the extension.</li>
+            <li><b>Funnel and behaviour data first.</b> Google Analytics and Hotjar narrowed where
+            to look. That told me where, not what to change.</li>
+            <li><b>User interviews with sellers</b> on the steps the data flagged. Watching someone
+            source a product with their own spreadsheet open shows you which columns they actually
+            read and which they scroll past.</li>
+            <li><b>Usability testing on prototypes, before build</b>, so disagreements were settled
+            by watching someone use it rather than by opinion in a review.</li>
           </ul>
 
-          <h4>The principle underneath</h4>
-          <div class="cs-call"><b>Analytics tells you where. Only people tell you why.</b><br>
-          A funnel chart will happily point at a screen and let you redesign it beautifully for the
-          wrong reason. Every drop&#8209;off point I acted on had a human explanation behind it
-          before I touched the design.</div>
+          <h4>Information architecture</h4>
+          <p>The structure came out of one decision: <b>the navigation and the workflow are the same
+          five things</b> &mdash; connect, scan, analyse, shortlist, generate PO. A seller never has
+          to translate between "where am I in the process" and "where am I in the app".</p>
+          <p>Each step also leaves behind an object you can return to: a scan, a shortlist, a
+          purchase order. Sourcing is not a session. It takes days, and it gets interrupted.</p>
 
-          <h4>Outcome</h4>
+          <h4>The hardest screen in the product</h4>
+          <p>Step one asks a stranger to connect their Amazon Seller Central account, before the
+          product has proved anything. Refusing is rational, so the screen answers the three
+          objections in the order they arrive: <b>the reward in the headline</b> (free scans),
+          <b>the reassurance at the point of click</b> (read&#8209;only, we never modify your data),
+          and <b>a visible escape hatch</b> &mdash; skip, with a lower limit. A seller who skips
+          still reaches the product. A seller who is cornered leaves.</p>
+          <p>Visitors with no Amazon account at all get a route rather than an error: a bootcamp and
+          a mentorship programme. A person who cannot use the product today becomes a seller later.</p>
+
+          <h4>Two versions of Getting Started</h4>
+          <p>First time through, a seller is learning a sequence, so the stepper is the teaching.
+          The second time that same stepper is a tax &mdash; they have a new supplier list and want
+          it scanned. So there are two flows: a <b>guided multi&#8209;step journey for new users</b>
+          and a <b>single&#8209;page version for returning ones</b>. The cost is two flows to
+          maintain instead of one. I took it because the alternative penalises exactly the
+          behaviour the product depends on: coming back.</p>
+
+          <h4>Triage before analysis</h4>
+          <p>After a few weeks a seller has many scanned lists. Name, size and date tell you nothing
+          about which is worth opening, so each list carries a <b>score distribution</b> instead
+          &mdash; a stacked bar of how many products scored 1 to 5. You can see that one supplier's
+          list has seventy&#8209;six excellent products and another has almost none without opening
+          either. Each list also carries its state in the workflow, so the process lives on the
+          object rather than in the user's memory.</p>
+
+          <h4>The hard decision</h4>
+          <div class="cs-call"><b>Simplify the product table, or keep it dense?</b><br>
+          The table is intimidating on first sight and everyone who reviews it says so. A simplified
+          version demos better and works worse: every column hidden behind a click costs a click per
+          row, and rows come in hundreds. The people who find it intimidating see it for thirty
+          seconds; the people who use it see it for hours and have been maintaining these same
+          columns by hand in a spreadsheet for years. I kept the density and paid for it elsewhere
+          &mdash; column grouping so the wall has four regions instead of twenty columns, colour so
+          the first pass needs no reading, and a compact view for scanning versus a full view for
+          inspecting. The honest cost is the first ten minutes.</div>
+
+          <h4>The system underneath</h4>
+          <p>A product with this much tabular data cannot be designed screen by screen. The rule
+          that holds it together is <b>blue is interaction, green&#8209;amber&#8209;red is
+          judgement</b>, and they never swap. A seller learns the traffic light once on the product
+          table and it reads the same way in the extension, on the scan list and in the shortlist.
+          One type family, eight sizes &mdash; a table with fourteen text sizes is a table nobody
+          can scan.</p>
+
+          <h4>What I'd do differently</h4>
           <ul>
-            <li>Drop&#8209;off points identified and addressed with evidence rather than opinion</li>
-            <li>Rework during development reduced by validating designs before build</li>
-            <li>Features and Chrome extension improvements shipped with engineering</li>
+            <li><b>The traffic light is colour&#8209;only.</b> Eligible, restricted and
+            check&#8209;eligibility are distinguished by green, red and amber and in places by
+            little else. For a colour&#8209;blind seller the fastest part of the interface is the
+            least usable part of it. Every state should carry a shape or a short label so colour is
+            reinforcement, not the whole signal. It is the change I would make first.</li>
+            <li><b>I did not instrument the table itself.</b> I know where people left the funnel. I
+            do not know which columns they use once they are inside the product table &mdash; which
+            would settle the density argument with evidence instead of reasoning.</li>
+            <li><b>Two Getting Started flows is a debt.</b> A single adaptive screen that collapses
+            as the user gains competence would serve both and halve the maintenance.</li>
           </ul>
+
+          <p class="cs-links"><a href="work/astro-advanced-analytics.html"><b>Read the full case study &rarr;</b></a>
+          &nbsp;&middot;&nbsp;
+          <a href="https://www.astroadvancedanalytics.com/" target="_blank" rel="noopener">Live product &#8599;</a>
+          &nbsp;&middot;&nbsp;
+          <a href="https://chromewebstore.google.com/detail/astro-advanced-analytics/pmbdkgeeikkigddegjljelfeakhmknpe" target="_blank" rel="noopener">Chrome extension &#8599;</a>
+          &nbsp;&middot;&nbsp;
+          <a href="https://www.behance.net/sarranshagrawal" target="_blank" rel="noopener">Full visual case study on Behance &#8599;</a></p>
 
           <div class="cs-tags">
-            <span class="cs-tag">User Research</span><span class="cs-tag">Usability Testing</span>
-            <span class="cs-tag">Funnel Analysis</span><span class="cs-tag">Google Analytics</span>
-            <span class="cs-tag">Hotjar</span><span class="cs-tag">UI Design</span>
+            <span class="cs-tag">End-to-End UX</span><span class="cs-tag">Information Architecture</span>
+            <span class="cs-tag">Design Systems</span><span class="cs-tag">Data-Dense UI</span>
+            <span class="cs-tag">Chrome Extension</span><span class="cs-tag">User Research</span>
+            <span class="cs-tag">Figma</span>
           </div>
         </div>
       </details>
